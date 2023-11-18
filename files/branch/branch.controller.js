@@ -1,0 +1,48 @@
+const { BAD_REQUEST, SUCCESS } = require("../../constants/statusCode")
+const { responseHandler } = require("../../core/response")
+const { manageAsyncOps, fileModifier } = require("../../utils")
+const { CustomError } = require("../../utils/errors")
+const { BranchService } = require("./branch.service")
+
+const createBranchController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    BranchService.createBranch(req.body, res.locals.jwt._id)
+  )
+
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, SUCCESS, data)
+}
+
+const getBranchController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    BranchService.getBranchService(req.query)
+  )
+
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, SUCCESS, data)
+}
+
+const updateBranchController = async (req, res, next) => {
+  let value = await fileModifier(req)
+  const [error, data] = await manageAsyncOps(
+    BranchService.updateBranchService(req.params.id, value, res.locals.jwt._id)
+  )
+
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, 200, data)
+}
+
+module.exports = {
+  createBranchController,
+  getBranchController,
+  updateBranchController,
+}
