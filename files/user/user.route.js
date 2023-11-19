@@ -13,13 +13,11 @@ const {
   updateUserProfileController,
   getUserProfileController,
 } = require("./controllers/profile.controller")
-const { createUser } = require("../../validations/users/createUser.validation")
 const { loginValidation } = require("../../validations/users/loginValidation")
 
+userRoute.use(isAuthenticated)
 //routes
-userRoute
-  .route("/")
-  .post(validate(checkSchema(createUser)), createUserController)
+userRoute.route("/").post(createUserController)
 
 userRoute
   .route("/login")
@@ -27,11 +25,9 @@ userRoute
 
 userRoute.route("/").get(getUserProfileController)
 
-userRoute.use(isAuthenticated)
-
 userRoute.patch(
   "/update/:id",
-  uploadManager("image").single("profileImage"),
+  uploadManager("image").single("image"),
   updateUserProfileController
 )
 

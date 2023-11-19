@@ -41,7 +41,7 @@ class BranchService {
       { _id: new mongoose.Types.ObjectId(id) },
       {
         ...body,
-        createdBy: new mongoose.Types.ObjectId(jwtId),
+        managedBy: new mongoose.Types.ObjectId(managedBy),
         image,
       }
     )

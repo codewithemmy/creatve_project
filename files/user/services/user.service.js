@@ -13,8 +13,8 @@ const { LIMIT, SKIP, SORT } = require("../../../constants")
 const { sendMailNotification } = require("../../../utils/email")
 // const { sendMailNotification } = require("../../../utils/email")
 class UserService {
-  static async createUser(payload) {
-    const { fullName, email } = payload
+  static async createUser(payload, jwtId) {
+    const { name, email, password, branchId, classId } = payload
 
     const userExist = await UserRepository.validateUser({
       email,
@@ -22,27 +22,29 @@ class UserService {
 
     if (userExist) return { success: false, msg: UserFailure.EXIST }
 
-    const { otp, expiry } = generateOtp()
+    let literalPassword = await hashPassword(password)
 
-    //hash password
     const user = await UserRepository.create({
       ...payload,
-      verificationOtp: otp,
-      password: await hashPassword(payload.password),
+      password: literalPassword,
+      createdBy: new mongoose.Types.ObjectId(jwtId),
+      branchId: new mongoose.Types.ObjectId(branchId),
+      classId: new mongoose.Types.ObjectId(classId),
     })
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }
 
     const substitutional_parameters = {
-      name: fullName,
-      emailOtp: otp,
+      name: name,
+      password: password,
+      email: email,
     }
 
     await sendMailNotification(
       email,
-      "Sign-Up",
+      "WELCOME TO CREATIVE SCHOOL",
       substitutional_parameters,
-      "VERIFICATION"
+      "CREATIVE_WELCOME"
     )
 
     return {
@@ -59,9 +61,6 @@ class UserService {
       email: email,
     })
 
-    if (userProfile.isVerified !== true)
-      return { success: false, msg: UserFailure.VERIFIED }
-
     if (!userProfile) return { success: false, msg: UserFailure.USER_EXIST }
 
     const isPassword = await verifyPassword(password, userProfile.password)
@@ -73,19 +72,15 @@ class UserService {
     userProfile.password = undefined
 
     token = await tokenHandler({
-      _id: userProfile._id,
-      username: userProfile.username,
-      fullName: userProfile.fullName,
-      email: userProfile.email,
-      accountType: userProfile.accountType,
+      ...userProfile,
       isAdmin: false,
     })
 
     const user = {
       _id: userProfile._id,
-      username: userProfile.username,
-      fullName: userProfile.fullName,
+      name: userProfile.name,
       email: userProfile.email,
+      accounttype: userProfile.accountType,
       ...token,
     }
 

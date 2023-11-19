@@ -22,10 +22,13 @@ class ProfileService {
 
     delete body.email
 
-    const userprofile = await UserRepository.updateUserById(id, {
-      profileImage: image,
-      ...body,
-    })
+    const userprofile = await UserRepository.updateUserDetails(
+      { _id: new mongoose.Types.ObjectId(id) },
+      {
+        profileImage: image,
+        ...body,
+      }
+    )
 
     if (!userprofile) return { success: false, msg: UserFailure.UPDATE }
 

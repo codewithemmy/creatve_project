@@ -23,6 +23,10 @@ const createUser = {
     notEmpty: true,
     errorMessage: "password cannot be empty",
   },
+  name: {
+    notEmpty: true,
+    errorMessage: "name cannot be empty",
+  },
   accountType: {
     notEmpty: true,
     errorMessage: "accountType cannot be empty",
