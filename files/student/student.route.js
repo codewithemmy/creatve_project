@@ -15,6 +15,9 @@ studentRoute
   .route("/")
   .post(uploadManager("image").single("single"), createStudentController)
   .get(getStudentController)
+
+studentRoute
+  .route("/:id")
   .patch(uploadManager("image").single("image"), studentImageController)
   .put(uploadManager("image").single("image"), updateStudentController)
 
