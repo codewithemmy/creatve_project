@@ -8,24 +8,42 @@ const createHash = require("../../utils/createHash")
 const { StudentSuccess, StudentFailure } = require("./student.messages")
 const { StudentRepository } = require("./student.repository")
 const { LIMIT, SKIP, SORT } = require("../../constants")
+const { sendMailNotification } = require("../../utils/email")
 
 class StudentService {
-  static async createStudent(payload) {
-    const { name, contact } = payload.body
-    const { image } = payload
+  static async createStudent(payload, jwtId) {
+    const { body, image } = payload
+    const { name, email, password } = body
     const validateStudent = await StudentRepository.validateStudent({
       name,
-      contact,
+      email,
     })
 
     if (validateStudent) return { success: true, msg: StudentFailure.EXIST }
 
+    let literalPassword = await hashPassword(password)
+
     const student = await StudentRepository.create({
-      ...payload,
+      ...body,
       profileImage: image,
+      password: literalPassword,
+      createdBy: new mongoose.Types.ObjectId(jwtId),
     })
 
     if (!student._id) return { success: false, msg: StudentFailure.CREATE }
+
+    const substitutional_parameters = {
+      name: name,
+      password: password,
+      email: email,
+    }
+
+    await sendMailNotification(
+      email,
+      "WELCOME TO CREATIVE SCHOOL",
+      substitutional_parameters,
+      "CREATIVE_WELCOME"
+    )
 
     return {
       success: true,

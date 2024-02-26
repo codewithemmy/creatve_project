@@ -2,15 +2,25 @@ const mongoose = require("mongoose")
 
 const schoolClassSchema = new mongoose.Schema(
   {
-    branchId: {
-      type: mongoose.Types.ObjectId,
-      ref: "Branch",
-    },
-    teacher: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
-    },
+    teacher: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    student: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
     name: {
+      type: String,
+    },
+    tag: {
+      type: String,
+    },
+    level: {
       type: String,
     },
   },
@@ -24,3 +34,5 @@ const schoolClass = mongoose.model(
 )
 
 module.exports = { SchoolClass: schoolClass }
+
+//tag

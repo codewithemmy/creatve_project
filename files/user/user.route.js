@@ -15,13 +15,18 @@ const {
 } = require("./controllers/profile.controller")
 const { loginValidation } = require("../../validations/users/loginValidation")
 
-userRoute.use(isAuthenticated)
-//routes
-userRoute.route("/").post(createUserController)
-
 userRoute
   .route("/login")
   .post(validate(checkSchema(loginValidation)), userLoginController)
+
+userRoute.use(isAuthenticated)
+//routes
+
+userRoute.post(
+  "/",
+  uploadManager("image").single("profileImage"),
+  createUserController
+)
 
 userRoute.route("/").get(getUserProfileController)
 

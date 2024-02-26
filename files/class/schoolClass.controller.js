@@ -8,7 +8,7 @@ const createSchoolClassController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     SchoolClassService.createSchoolClass(req.body)
   )
-
+  console.log("error", error)
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
@@ -32,6 +32,7 @@ const updateSchoolClassController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     SchoolClassService.updateSchoolClass(req.body, req.params.id)
   )
+
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))

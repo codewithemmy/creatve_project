@@ -15,4 +15,7 @@ schoolClassRoute
   .get(getSchoolClassController)
   .patch(updateSchoolClassController)
 
+//routes
+schoolClassRoute.route("/:id").patch(updateSchoolClassController)
+
 module.exports = schoolClassRoute

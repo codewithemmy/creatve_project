@@ -5,25 +5,58 @@ const studentSchema = new mongoose.Schema(
     name: {
       type: String,
     },
-    profileImage: {
+    email: {
+      type: String,
+      unique: true,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    genotype: {
+      type: String,
+    },
+    nationality: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    homeTown: {
+      type: String,
+    },
+    localGovernmentArea: {
+      type: String,
+    },
+    address: {
       type: String,
     },
     parentName: {
       type: String,
     },
-    city: {
+    occupation: {
       type: String,
     },
-    contact: {
+    intendedClass: {
       type: String,
     },
-    classId: {
+    phone: {
+      type: String,
+    },
+    houseNameColor: {
+      type: String,
+    },
+    profileImage: {
+      type: String,
+    },
+    createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: "Class",
+      ref: "Admin",
     },
+    password: { type: String },
     accountType: {
       type: String,
-      default: "student",
+      required: true,
+      enum: ["student"],
     },
     isDelete: {
       type: Boolean,

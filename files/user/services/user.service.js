@@ -14,10 +14,12 @@ const { sendMailNotification } = require("../../../utils/email")
 // const { sendMailNotification } = require("../../../utils/email")
 class UserService {
   static async createUser(payload, jwtId) {
-    const { name, email, password, branchId, classId } = payload
+    const { body, image } = payload
+    const { name, email, password, classId } = body
 
     const userExist = await UserRepository.validateUser({
       email,
+      name,
     })
 
     if (userExist) return { success: false, msg: UserFailure.EXIST }
@@ -25,11 +27,10 @@ class UserService {
     let literalPassword = await hashPassword(password)
 
     const user = await UserRepository.create({
-      ...payload,
+      ...body,
+      profileImage: image,
       password: literalPassword,
       createdBy: new mongoose.Types.ObjectId(jwtId),
-      branchId: new mongoose.Types.ObjectId(branchId),
-      classId: new mongoose.Types.ObjectId(classId),
     })
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }

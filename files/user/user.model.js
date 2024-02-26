@@ -5,24 +5,52 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
     },
-    profileImage: {
-      type: String,
-    },
     email: {
       type: String,
       unique: true,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    nationality: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    homeTown: {
+      type: String,
+    },
+    localGovernmentArea: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    houseNameColor: {
+      type: String,
+    },
+    referee: {
+      type: String,
+    },
+    refereeAddress: {
+      type: String,
+    },
+    profileImage: {
+      type: String,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "Admin",
     },
     password: { type: String },
-    branchId: { type: mongoose.Types.ObjectId, ref: "Branch" },
-    classId: { type: mongoose.Types.ObjectId, ref: "class" },
     accountType: {
       type: String,
       required: true,
-      enum: ["teacher", "parent"],
+      enum: ["teacher"],
     },
     isDelete: {
       type: Boolean,
