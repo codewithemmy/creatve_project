@@ -6,7 +6,7 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profileImage: String,
+    image: String,
     email: {
       type: String,
       required: true,
@@ -25,8 +25,8 @@ const adminSchema = new mongoose.Schema(
     },
     accountType: {
       type: String,
-      enum: ["admin", "superAdmin"],
-      default: "admin",
+      enum: ["subAdmin", "superAdmin"],
+      default: "superAdmin",
     },
   },
   { timestamps: true }

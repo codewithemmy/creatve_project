@@ -5,13 +5,16 @@ const {
   verifyPassword,
   tokenHandler,
   queryConstructor,
+  AlphaNumeric,
 } = require("../../utils/index")
 const { authMessages } = require("./messages/auth.messages")
 const { adminMessages } = require("./messages/admin.messages")
 const { UserRepository } = require("../user/user.repository")
+const { sendMailNotification } = require("../../utils/email")
 
 class AdminAuthService {
   static async adminSignUpService(body) {
+    const { accountType } = body
     const admin = await AdminRepository.fetchAdmin({
       email: body.email,
     })
@@ -19,9 +22,28 @@ class AdminAuthService {
     if (admin) {
       return { success: false, msg: authMessages.ADMIN_EXISTS }
     }
-
-    const password = await hashPassword(body.password)
+    let password
+    let randomPassword
+    if (accountType == "subAdmin") {
+      randomPassword = await AlphaNumeric(8)
+      password = await hashPassword(randomPassword)
+    } else {
+      password = await hashPassword(body.password)
+    }
     const signUp = await AdminRepository.create({ ...body, password })
+
+    const substitutional_parameters = {
+      name: signUp.fullName,
+      password: randomPassword,
+      email: signUp.email,
+    }
+
+    await sendMailNotification(
+      signUp.email,
+      "CREATIVE SCHOOL ADMIN",
+      substitutional_parameters,
+      "ADMIN_ACCOUNT"
+    )
 
     return { success: true, msg: authMessages.ADMIN_CREATED, data: signUp }
   }
@@ -84,11 +106,11 @@ class AdminAuthService {
     return { success: true, msg: authMessages.ADMIN_FOUND, data: getAdmin }
   }
 
-  static async updateAdminService(data) {
-    const { body, params } = data
+  static async updateAdminService(data, params) {
+    const { image, body } = data
     const admin = await AdminRepository.updateAdminDetails(
-      { _id: new mongoose.Types.ObjectId(params.id) },
-      body
+      { _id: new mongoose.Types.ObjectId(params) },
+      { ...body, image }
     )
 
     if (!admin) {
@@ -100,7 +122,6 @@ class AdminAuthService {
       return {
         success: true,
         msg: adminMessages.UPDATE_PROFILE_SUCCESS,
-        admin,
       }
     }
   }

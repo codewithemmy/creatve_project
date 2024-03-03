@@ -9,11 +9,12 @@ const { StudentSuccess, StudentFailure } = require("./student.messages")
 const { StudentRepository } = require("./student.repository")
 const { LIMIT, SKIP, SORT } = require("../../constants")
 const { sendMailNotification } = require("../../utils/email")
+const { SchoolClassRepository } = require("../class/schoolClass.repository")
 
 class StudentService {
   static async createStudent(payload, jwtId) {
     const { body, image } = payload
-    const { name, email, password } = body
+    const { name, email, password, classId } = body
     const validateStudent = await StudentRepository.validateStudent({
       name,
       email,
@@ -26,11 +27,23 @@ class StudentService {
     const student = await StudentRepository.create({
       ...body,
       profileImage: image,
+      classId,
       password: literalPassword,
       createdBy: new mongoose.Types.ObjectId(jwtId),
     })
 
     if (!student._id) return { success: false, msg: StudentFailure.CREATE }
+
+    if (classId) {
+      await SchoolClassRepository.updateSchoolClassDetails(
+        {
+          _id: new mongoose.Types.ObjectId(classId),
+        },
+        {
+          $push: { teacher: new mongoose.Types.ObjectId(user._id) },
+        }
+      )
+    }
 
     const substitutional_parameters = {
       name: name,

@@ -6,12 +6,17 @@ const {
   adminSignUpController,
   adminLogin,
   getAdminController,
+  updateAdminController,
 } = require("./admin.controller")
 
 //admin route
 adminRoute.route("/").post(adminSignUpController)
+
+adminRoute.use(isAuthenticated)
 adminRoute.route("/login").post(adminLogin)
 adminRoute.route("/").get(getAdminController)
-
+adminRoute
+  .route("/:id")
+  .patch(uploadManager("image").single("image"), updateAdminController)
 
 module.exports = adminRoute

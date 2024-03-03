@@ -5,11 +5,11 @@ const {
   SchoolClassFailure,
 } = require("./schoolClass.messages")
 const { SchoolClassRepository } = require("./schoolClass.repository")
-const { LIMIT, SKIP, SORT } = require("../../constants")
 
 class SchoolClassService {
   static async createSchoolClass(payload) {
-    const { name, level } = payload
+    const { body, image } = payload
+    const { name, level } = body
     const validateSchoolClass = await SchoolClassRepository.validateSchoolClass(
       {
         name,
@@ -21,7 +21,8 @@ class SchoolClassService {
       return { success: true, msg: SchoolClassFailure.EXIST }
 
     const schoolClass = await SchoolClassRepository.create({
-      ...payload,
+      ...body,
+      image,
     })
 
     if (!schoolClass._id)
@@ -55,6 +56,7 @@ class SchoolClassService {
   }
 
   static async updateSchoolClass(payload, id) {
+    const { image, body } = payload
     const findSchoolClass =
       await SchoolClassRepository.findSingleSchoolClassWithParams({
         _id: new mongoose.Types.ObjectId(id),
@@ -68,21 +70,22 @@ class SchoolClassService {
       schoolClass = await SchoolClassRepository.updateSchoolClassDetails(
         { _id: new mongoose.Types.ObjectId(id) },
         {
-          $push: { teacher: new mongoose.Types.ObjectId(payload.teacher) },
+          $push: { teacher: new mongoose.Types.ObjectId(body.teacher) },
         }
       )
     } else if (payload.student) {
       schoolClass = await SchoolClassRepository.updateSchoolClassDetails(
         { _id: new mongoose.Types.ObjectId(id) },
         {
-          $push: { student: new mongoose.Types.ObjectId(payload.student) },
+          $push: { student: new mongoose.Types.ObjectId(body.student) },
         }
       )
     } else {
       schoolClass = await SchoolClassRepository.updateSchoolClassDetails(
         { _id: new mongoose.Types.ObjectId(id) },
         {
-          ...payload,
+          ...body,
+          image,
         }
       )
     }

@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Admin",
     },
+    classId: {
+      type: mongoose.Types.ObjectId,
+      ref: "SchoolClass",
+    },
     password: { type: String },
     accountType: {
       type: String,

@@ -11,6 +11,7 @@ const { UserRepository } = require("../user.repository")
 
 const { LIMIT, SKIP, SORT } = require("../../../constants")
 const { sendMailNotification } = require("../../../utils/email")
+const { SchoolClassRepository } = require("../../class/schoolClass.repository")
 // const { sendMailNotification } = require("../../../utils/email")
 class UserService {
   static async createUser(payload, jwtId) {
@@ -30,10 +31,22 @@ class UserService {
       ...body,
       profileImage: image,
       password: literalPassword,
+      classId,
       createdBy: new mongoose.Types.ObjectId(jwtId),
     })
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }
+
+    if (classId) {
+      await SchoolClassRepository.updateSchoolClassDetails(
+        {
+          _id: new mongoose.Types.ObjectId(classId),
+        },
+        {
+          $push: { teacher: new mongoose.Types.ObjectId(user._id) },
+        }
+      )
+    }
 
     const substitutional_parameters = {
       name: name,

@@ -1,14 +1,15 @@
 const { BAD_REQUEST, SUCCESS } = require("../../constants/statusCode")
 const { responseHandler } = require("../../core/response")
-const { manageAsyncOps } = require("../../utils")
+const { manageAsyncOps, fileModifier } = require("../../utils")
 const { CustomError } = require("../../utils/errors")
 const { SchoolClassService } = require("./schoolClass.service")
 
 const createSchoolClassController = async (req, res, next) => {
+  const value = await fileModifier(req)
   const [error, data] = await manageAsyncOps(
-    SchoolClassService.createSchoolClass(req.body)
+    SchoolClassService.createSchoolClass(value)
   )
-  console.log("error", error)
+
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
@@ -29,8 +30,9 @@ const getSchoolClassController = async (req, res, next) => {
 }
 
 const updateSchoolClassController = async (req, res, next) => {
+  const value = await fileModifier(req)
   const [error, data] = await manageAsyncOps(
-    SchoolClassService.updateSchoolClass(req.body, req.params.id)
+    SchoolClassService.updateSchoolClass(value, req.params.id)
   )
 
   if (error) return next(error)
