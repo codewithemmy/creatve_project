@@ -8,22 +8,25 @@ const {
 const createHash = require("../../utils/createHash")
 const { BranchSuccess, BranchFailure } = require("./branch.messages")
 const { BranchRepository } = require("../branch/branch.repository")
-const { LIMIT, SKIP, SORT } = require("../../constants")
-const { AdminRepository } = require("../admin/admin.repository")
-
 class BranchService {
   static async createBranch(branchPayload, jwtId) {
     const { body, image } = branchPayload
-    const { email, branchName } = body
+    const { email } = body
     const branchExist = await BranchRepository.validateBranch({
-      email,
-      branchName,
+      $or: [
+        {
+          email,
+        },
+        {
+          branchName,
+        },
+      ],
     })
 
     if (branchExist) return { success: false, msg: BranchFailure.EXIST }
 
     const branch = await BranchRepository.create({
-      ...branchPayload,
+      ...body,
       image,
       createdBy: new mongoose.Types.ObjectId(jwtId),
     })

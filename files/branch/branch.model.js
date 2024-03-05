@@ -19,11 +19,9 @@ const branchSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      unique: true,
     },
     description: { type: String },
     createdBy: { type: mongoose.Types.ObjectId, ref: "Admin" },
-    managedBy: { type: mongoose.Types.ObjectId, ref: "Admin" },
     isDelete: {
       type: Boolean,
       default: false,
