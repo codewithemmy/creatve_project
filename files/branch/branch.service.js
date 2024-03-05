@@ -13,7 +13,8 @@ const { AdminRepository } = require("../admin/admin.repository")
 
 class BranchService {
   static async createBranch(branchPayload, jwtId) {
-    const { email, branchName } = branchPayload
+    const { body, image } = branchPayload
+    const { email, branchName } = body
     const branchExist = await BranchRepository.validateBranch({
       email,
       branchName,
@@ -23,6 +24,7 @@ class BranchService {
 
     const branch = await BranchRepository.create({
       ...branchPayload,
+      image,
       createdBy: new mongoose.Types.ObjectId(jwtId),
     })
 
@@ -34,26 +36,18 @@ class BranchService {
     }
   }
 
-  static async updateBranchService(id, payload, jwtId) {
+  static async updateBranchService(payload, id) {
     const { image, body } = payload
     const { managedBy } = body
     const branch = await BranchRepository.updateBranchDetails(
       { _id: new mongoose.Types.ObjectId(id) },
       {
         ...body,
-        managedBy: new mongoose.Types.ObjectId(managedBy),
         image,
       }
     )
 
     if (!branch) return { success: false, msg: BranchFailure.UPDATE }
-
-    const admin = await AdminRepository.updateAdminById(managedBy, {
-      branchId: new mongoose.Types.ObjectId(branch._id),
-    })
-
-    if (!admin)
-      return { success: false, msg: `unable to assign branch to admin` }
 
     return {
       success: true,

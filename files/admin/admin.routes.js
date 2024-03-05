@@ -11,9 +11,8 @@ const {
 
 //admin route
 adminRoute.route("/").post(adminSignUpController)
-
-adminRoute.use(isAuthenticated)
 adminRoute.route("/login").post(adminLogin)
+adminRoute.use(isAuthenticated)
 adminRoute.route("/").get(getAdminController)
 adminRoute
   .route("/:id")

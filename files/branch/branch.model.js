@@ -5,6 +5,9 @@ const branchSchema = new mongoose.Schema(
     branchName: {
       type: String,
     },
+    image: {
+      type: String,
+    },
     location: {
       type: String,
     },

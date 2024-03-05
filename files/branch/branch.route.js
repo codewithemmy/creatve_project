@@ -2,6 +2,7 @@ const { uploadManager } = require("../../utils/multer")
 const { checkSchema } = require("express-validator")
 const branchRoute = require("express").Router()
 const { isAuthenticated, adminVerifier } = require("../../utils")
+const {} = require("../../utils/multer")
 const { validate } = require("../../validations/validate")
 const {
   createBranchController,
@@ -13,12 +14,18 @@ const { createUser } = require("../../validations/users/createUser.validation")
 branchRoute.use(isAuthenticated)
 
 //routes
-branchRoute.route("/").post(adminVerifier, createBranchController)
+branchRoute
+  .route("/")
+  .post(
+    adminVerifier,
+    uploadManager("image").single("image"),
+    createBranchController
+  )
 branchRoute.route("/").get(adminVerifier, getBranchController)
 
 branchRoute.patch(
   "/:id",
-  uploadManager("profile").single("image"),
+  uploadManager("image").single("image"),
   updateBranchController
 )
 
