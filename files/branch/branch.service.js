@@ -11,7 +11,7 @@ const { BranchRepository } = require("../branch/branch.repository")
 class BranchService {
   static async createBranch(branchPayload, jwtId) {
     const { body, image } = branchPayload
-    const { email } = body
+    const { email, branchName } = body
     const branchExist = await BranchRepository.validateBranch({
       $or: [
         {
