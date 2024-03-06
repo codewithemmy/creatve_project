@@ -83,6 +83,7 @@ const studentSchema = new mongoose.Schema(
     password: { type: String },
     accountType: {
       type: String,
+      enum: ["student"]
     },
     isDelete: {
       type: Boolean,
