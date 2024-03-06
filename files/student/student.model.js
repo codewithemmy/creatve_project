@@ -15,6 +15,21 @@ const studentSchema = new mongoose.Schema(
     genotype: {
       type: String,
     },
+    martialStatus: {
+      type: String,
+    },
+    intendedClass: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    bloodGroup: {
+      type: String,
+    },
+    parentOccupation: {
+      type: String,
+    },
     nationality: {
       type: String,
     },
@@ -34,9 +49,6 @@ const studentSchema = new mongoose.Schema(
       type: String,
     },
     occupation: {
-      type: String,
-    },
-    intendedClass: {
       type: String,
     },
     phone: {

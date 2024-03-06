@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
     profileImage: {
       type: String,
     },
+    intendedClass: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "Admin",
