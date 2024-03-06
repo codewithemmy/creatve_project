@@ -9,10 +9,34 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    maritalStatus: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
     dateOfBirth: {
       type: Date,
     },
+    genotype: {
+      type: String,
+    },
+    intendedClass: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    bloodGroup: {
+      type: String,
+    },
+    parentOccupation: {
+      type: String,
+    },
     nationality: {
+      type: String,
+    },
+    referee: {
       type: String,
     },
     state: {
@@ -27,25 +51,25 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    refereeAddress: {
+      type: String,
+    },
+    parentName: {
+      type: String,
+    },
+    occupation: {
+      type: String,
+    },
     phone: {
+      type: String,
+    },
+    subject: {
       type: String,
     },
     houseNameColor: {
       type: String,
     },
-    referee: {
-      type: String,
-    },
-    refereeAddress: {
-      type: String,
-    },
     profileImage: {
-      type: String,
-    },
-    intendedClass: {
-      type: String,
-    },
-    gender: {
       type: String,
     },
     createdBy: {
@@ -59,8 +83,6 @@ const userSchema = new mongoose.Schema(
     password: { type: String },
     accountType: {
       type: String,
-      required: true,
-      enum: ["teacher"],
     },
     isDelete: {
       type: Boolean,

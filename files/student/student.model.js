@@ -9,13 +9,16 @@ const studentSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    maritalStatus: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
     dateOfBirth: {
       type: Date,
     },
     genotype: {
-      type: String,
-    },
-    martialStatus: {
       type: String,
     },
     intendedClass: {
@@ -33,6 +36,9 @@ const studentSchema = new mongoose.Schema(
     nationality: {
       type: String,
     },
+    referee: {
+      type: String,
+    },
     state: {
       type: String,
     },
@@ -45,6 +51,9 @@ const studentSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    refereeAddress: {
+      type: String,
+    },
     parentName: {
       type: String,
     },
@@ -52,6 +61,9 @@ const studentSchema = new mongoose.Schema(
       type: String,
     },
     phone: {
+      type: String,
+    },
+    subject: {
       type: String,
     },
     houseNameColor: {
@@ -71,8 +83,6 @@ const studentSchema = new mongoose.Schema(
     password: { type: String },
     accountType: {
       type: String,
-      required: true,
-      enum: ["student"],
     },
     isDelete: {
       type: Boolean,
