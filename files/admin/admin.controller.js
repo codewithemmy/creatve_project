@@ -9,7 +9,6 @@ const adminSignUpController = async (req, res, next) => {
   )
 
   if (error) return next(error)
-
   if (!data?.success) return next(new CustomError(data.msg, 400, data))
 
   return responseHandler(res, 200, data)

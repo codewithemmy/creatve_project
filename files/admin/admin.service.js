@@ -24,7 +24,7 @@ class AdminAuthService {
     }
     let password
     let randomPassword
-    if (accountType == "subAdmin") {
+    if (accountType == "admin") {
       randomPassword = await AlphaNumeric(8)
       password = await hashPassword(randomPassword)
     } else {
