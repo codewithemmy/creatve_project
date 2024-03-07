@@ -73,7 +73,7 @@ class BranchService {
       sort,
     })
 
-    if (branch.length < 1) return { success: false, msg: BranchFailure.FETCH }
+    if (branch.length < 1) return { success: true, msg: BranchFailure.FETCH, data: [] }
 
     return { success: true, msg: BranchSuccess.FETCH, data: branch }
   }
