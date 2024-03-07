@@ -18,7 +18,7 @@ class SchoolClassService {
     )
 
     if (validateSchoolClass)
-      return { success: true, msg: SchoolClassFailure.EXIST }
+      return { success: false, msg: SchoolClassFailure.EXIST }
 
     const schoolClass = await SchoolClassRepository.create({
       ...body,
