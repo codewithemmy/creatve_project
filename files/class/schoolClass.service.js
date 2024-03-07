@@ -50,7 +50,7 @@ class SchoolClassService {
     })
 
     if (schoolClass.length < 1)
-      return { success: false, msg: SchoolClassFailure.FETCH }
+      return { success: true, msg: SchoolClassFailure.FETCH, data: [] }
 
     return { success: true, msg: SchoolClassSuccess.FETCH, data: schoolClass }
   }
