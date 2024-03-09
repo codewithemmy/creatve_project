@@ -37,6 +37,10 @@ class BranchRepository {
       { ...params } //returns details about the update
     )
   }
+
+  static async deleteBranchById(id) {
+    return Branch.findByIdAndDelete({ _id: new mongoose.Types.ObjectId(id) })
+  }
 }
 
 module.exports = { BranchRepository }

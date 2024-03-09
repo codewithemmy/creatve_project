@@ -201,6 +201,14 @@ class AdminAuthService {
 
     return { success: true, msg: authMessages.ADMIN_FOUND, data: getAdmin }
   }
+
+  static async deleteAdminService(payload) {
+    const admin = await AdminRepository.deleteAdminById(payload)
+
+    if (!admin) return { success: false, msg: `Unable to delete admin` }
+
+    return { success: true, msg: `Admin successfully deleted` }
+  }
 }
 
 module.exports = { AdminAuthService }

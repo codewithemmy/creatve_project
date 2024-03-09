@@ -73,9 +73,18 @@ class BranchService {
       sort,
     })
 
-    if (branch.length < 1) return { success: true, msg: BranchFailure.FETCH, data: [] }
+    if (branch.length < 1)
+      return { success: true, msg: BranchFailure.FETCH, data: [] }
 
     return { success: true, msg: BranchSuccess.FETCH, data: branch }
+  }
+
+  static async deleteBranchService(payload) {
+    const branch = await BranchRepository.deleteBranchById(payload)
+
+    if (!branch) return { success: false, msg: `Unable to delete branch` }
+
+    return { success: true, msg: `Branch successfully deleted` }
   }
 }
 

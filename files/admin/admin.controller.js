@@ -87,6 +87,18 @@ const imageUpload = async (req, res, next) => {
   return responseHandler(res, 200, data)
 }
 
+const deleteAdminController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    AdminAuthService.deleteAdminService(req.params.id)
+  )
+  console.log("error", error)
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, 400, data))
+
+  return responseHandler(res, 200, data)
+}
+
 module.exports = {
   adminSignUpController,
   adminLogin,
@@ -95,4 +107,5 @@ module.exports = {
   imageUpload,
   getAdminController,
   getLoggedInAdminController,
+  deleteAdminController,
 }

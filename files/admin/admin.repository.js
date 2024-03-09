@@ -31,6 +31,10 @@ class AdminRepository {
       { $set: { ...params } }
     )
   }
+
+  static async deleteAdminById(id) {
+    return Admin.findByIdAndDelete({ _id: new mongoose.Types.ObjectId(id) })
+  }
 }
 
 module.exports = { AdminRepository }

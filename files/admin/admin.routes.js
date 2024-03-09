@@ -7,13 +7,15 @@ const {
   adminLogin,
   getAdminController,
   updateAdminController,
+  deleteAdminController,
 } = require("./admin.controller")
 
 //admin route
 adminRoute.route("/").post(adminSignUpController)
 adminRoute.route("/login").post(adminLogin)
-adminRoute.use(isAuthenticated)
+adminRoute.use(isAuthenticated) 
 adminRoute.route("/").get(getAdminController)
+adminRoute.route("/:id").delete(deleteAdminController)
 adminRoute
   .route("/:id")
   .patch(uploadManager("image").single("image"), updateAdminController)

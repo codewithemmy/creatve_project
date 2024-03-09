@@ -8,6 +8,7 @@ const {
   createBranchController,
   getBranchController,
   updateBranchController,
+  deleteBranchController,
 } = require("./branch.controller")
 const { createUser } = require("../../validations/users/createUser.validation")
 
@@ -22,6 +23,7 @@ branchRoute
     createBranchController
   )
 branchRoute.route("/").get(adminVerifier, getBranchController)
+branchRoute.route("/:id").delete(deleteBranchController)
 
 branchRoute.patch(
   "/:id",
