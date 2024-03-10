@@ -42,8 +42,21 @@ const updateSchoolClassController = async (req, res, next) => {
   return responseHandler(res, SUCCESS, data)
 }
 
+const deleteSchoolClassController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    SchoolClassService.deleteSchoolClassService(req.params.id)
+  )
+
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, 200, data)
+}
+
 module.exports = {
   createSchoolClassController,
   getSchoolClassController,
   updateSchoolClassController,
+  deleteSchoolClassController,
 }

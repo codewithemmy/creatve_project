@@ -53,6 +53,7 @@ const deleteBranchController = async (req, res, next) => {
 
   return responseHandler(res, 200, data)
 }
+
 module.exports = {
   createBranchController,
   getBranchController,

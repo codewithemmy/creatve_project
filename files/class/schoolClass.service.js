@@ -97,6 +97,14 @@ class SchoolClassService {
       msg: SchoolClassSuccess.UPDATE,
     }
   }
+
+  static async deleteSchoolClassService(payload) {
+    const schoolClass = await SchoolClassRepository.deleteClassById(payload)
+
+    if (!schoolClass) return { success: false, msg: `Unable to delete class` }
+
+    return { success: true, msg: `Class successfully deleted` }
+  }
 }
 
 module.exports = { SchoolClassService }

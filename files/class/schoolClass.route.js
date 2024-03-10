@@ -5,6 +5,7 @@ const {
   createSchoolClassController,
   getSchoolClassController,
   updateSchoolClassController,
+  deleteSchoolClassController,
 } = require("./schoolClass.controller")
 
 schoolClassRoute.use(isAuthenticated)
@@ -14,10 +15,8 @@ schoolClassRoute
   .route("/")
   .post(uploadManager("image").single("image"), createSchoolClassController)
 
-schoolClassRoute
-  .route("/")
-  .get(getSchoolClassController)
-  .patch(updateSchoolClassController)
+schoolClassRoute.route("/").get(getSchoolClassController)
+schoolClassRoute.route("/:id").delete(deleteSchoolClassController)
 
 //routes
 schoolClassRoute

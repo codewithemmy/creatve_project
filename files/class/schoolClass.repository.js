@@ -39,6 +39,12 @@ class SchoolClassRepository {
       { ...params } //returns details about the update
     )
   }
+
+  static async deleteClassById(id) {
+    return SchoolClass.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(id),
+    })
+  }
 }
 
 module.exports = { SchoolClassRepository }
