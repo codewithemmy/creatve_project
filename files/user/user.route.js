@@ -12,6 +12,7 @@ const {
 const {
   updateUserProfileController,
   getUserProfileController,
+  deleteProfileController,
 } = require("./controllers/profile.controller")
 const { loginValidation } = require("../../validations/users/loginValidation")
 
@@ -29,6 +30,7 @@ userRoute.post(
 )
 
 userRoute.route("/").get(getUserProfileController)
+userRoute.route("/:id").delete(deleteProfileController)
 
 userRoute.patch(
   "/update/:id",

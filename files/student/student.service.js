@@ -95,7 +95,7 @@ class StudentService {
 
     if (!findStudent) return { success: false, msg: StudentFailure.FETCH }
 
-    const student = await StudentRepository.updateUserDetails(
+    const student = await StudentRepository.updateStudentDetails(
       { _id: new mongoose.Types.ObjectId(id) },
       {
         ...body,
@@ -123,6 +123,14 @@ class StudentService {
     if (!student) return { success: false, msg: StudentFailure.UPDATE }
 
     return { success: true, msg: StudentSuccess.UPDATE }
+  }
+
+  static async deleteStudentService(payload) {
+    const user = await StudentRepository.deleteStudentById(payload)
+
+    if (!user) return { success: false, msg: `Unable to delete User` }
+
+    return { success: true, msg: `User successfully deleted` }
   }
 }
 

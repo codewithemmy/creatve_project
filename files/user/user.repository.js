@@ -37,6 +37,12 @@ class UserRepository {
       { ...params } //returns details about the update
     )
   }
+
+  static async deleteUserById(id) {
+    return User.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(id),
+    })
+  }
 }
 
 module.exports = { UserRepository }

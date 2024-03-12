@@ -123,6 +123,14 @@ class ProfileService {
       data: user,
     }
   }
+
+  static async deleteUserService(payload) {
+    const user = await UserRepository.deleteUserById(payload)
+
+    if (!user) return { success: false, msg: `Unable to delete User` }
+
+    return { success: true, msg: `User successfully deleted` }
+  }
 }
 
 module.exports = { ProfileService }

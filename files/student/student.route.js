@@ -6,6 +6,7 @@ const {
   getStudentController,
   updateStudentController,
   studentImageController,
+  deleteStudentController,
 } = require("./student.controller")
 
 studentRoute.use(isAuthenticated)
@@ -20,5 +21,7 @@ studentRoute
   .route("/:id")
   .patch(uploadManager("image").single("image"), studentImageController)
   .put(uploadManager("image").single("image"), updateStudentController)
+
+studentRoute.route("/:id").delete(deleteStudentController)
 
 module.exports = studentRoute

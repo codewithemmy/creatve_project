@@ -65,10 +65,24 @@ const updateUserProfileController = async (req, res, next) => {
   return responseHandler(res, 200, data)
 }
 
+const deleteProfileController = async (req, res, next) => {
+  let value = await fileModifier(req)
+  const [error, data] = await manageAsyncOps(
+    ProfileService.deleteUserService(req.params.id)
+  )
+
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, 200, data)
+}
+
 module.exports = {
   getUserController,
   updateUserController,
   changePasswordController,
   getUserProfileController,
   updateUserProfileController,
+  deleteProfileController,
 }
