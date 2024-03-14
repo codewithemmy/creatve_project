@@ -12,7 +12,7 @@ const { sendMailNotification } = require("../../utils/email")
 const { SchoolClassRepository } = require("../class/schoolClass.repository")
 
 class StudentService {
-  static async createStudent(payload, jwtId) {
+  static async createStudent(payload, params) {
     const { body, image } = payload
     const { name, email, password, classId } = body
     const validateStudent = await StudentRepository.validateStudent({
@@ -28,8 +28,8 @@ class StudentService {
       ...body,
       profileImage: image,
       classId,
+      branchId: new mongoose.Types.ObjectId(params?.branchId),
       password: literalPassword,
-      createdBy: new mongoose.Types.ObjectId(jwtId),
     })
 
     if (!student._id) return { success: false, msg: StudentFailure.CREATE }

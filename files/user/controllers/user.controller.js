@@ -10,7 +10,7 @@ const createUserController = async (req, res, next) => {
   const { body } = value
   if (body.accountType === "student") {
     const [error, data] = await manageAsyncOps(
-      StudentService.createStudent(value, res.locals.jwt._id)
+      StudentService.createStudent(value, res.locals.jwt)
     )
 
     if (error) return next(error)
@@ -20,9 +20,9 @@ const createUserController = async (req, res, next) => {
     return responseHandler(res, SUCCESS, data)
   }
   const [error, data] = await manageAsyncOps(
-    UserService.createUser(value, res.locals.jwt._id)
+    UserService.createUser(value, res.locals.jwt)
   )
-  console.log("error", error)
+
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))

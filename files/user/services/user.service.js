@@ -14,7 +14,7 @@ const { sendMailNotification } = require("../../../utils/email")
 const { SchoolClassRepository } = require("../../class/schoolClass.repository")
 // const { sendMailNotification } = require("../../../utils/email")
 class UserService {
-  static async createUser(payload, jwtId) {
+  static async createUser(payload, params) {
     const { body, image } = payload
     const { name, email, password, classId } = body
 
@@ -32,7 +32,7 @@ class UserService {
       profileImage: image,
       password: literalPassword,
       classId,
-      createdBy: new mongoose.Types.ObjectId(jwtId),
+      branchId: new mongoose.Types.ObjectId(params?.branchId),
     })
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }

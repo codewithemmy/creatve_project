@@ -7,7 +7,7 @@ const { SchoolClassService } = require("./schoolClass.service")
 const createSchoolClassController = async (req, res, next) => {
   const value = await fileModifier(req)
   const [error, data] = await manageAsyncOps(
-    SchoolClassService.createSchoolClass(value)
+    SchoolClassService.createSchoolClass(value, res.locals.jwt)
   )
 
   if (error) return next(error)

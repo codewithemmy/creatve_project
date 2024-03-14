@@ -7,7 +7,7 @@ const { StudentService } = require("./student.service")
 const createStudentController = async (req, res, next) => {
   const value = await fileModifier(req)
   const [error, data] = await manageAsyncOps(
-    StudentService.createStudent(value)
+    StudentService.createStudent(value, res.locals.jwt)
   )
 
   if (error) return next(error)

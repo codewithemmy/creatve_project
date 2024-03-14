@@ -74,6 +74,7 @@ class AdminAuthService {
       fullName: admin.fullName,
       profileImage: admin.profileImage,
       accountType: admin.accountType,
+      branchId: admin.branchId,
       isAdmin: true,
     })
 
