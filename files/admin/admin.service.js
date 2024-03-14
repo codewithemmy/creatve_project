@@ -108,6 +108,7 @@ class AdminAuthService {
 
   static async updateAdminService(data, params) {
     const { image, body } = data
+    delete body?.accountType
     const admin = await AdminRepository.updateAdminDetails(
       { _id: new mongoose.Types.ObjectId(params) },
       { ...body, image }
