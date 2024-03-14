@@ -9,7 +9,7 @@ const {
   deleteStudentController,
 } = require("./student.controller")
 
-studentRoute.use(isAuthenticated)
+// studentRoute.use(isAuthenticated)
 //routes
 
 studentRoute

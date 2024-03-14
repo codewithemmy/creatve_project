@@ -59,7 +59,7 @@ const deleteStudentController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     StudentService.deleteStudentService(req.params.id)
   )
-
+  console.log("error", error)
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
