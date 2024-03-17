@@ -64,7 +64,7 @@ const updateAdminController = async (req, res, next) => {
 
 const changeAdminPasswordController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
-    AdminAuthService.changePassword(req.body)
+    AdminAuthService.changePassword(req.body, req.params.id)
   )
   if (error) return next(error)
 
@@ -91,7 +91,7 @@ const deleteAdminController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     AdminAuthService.deleteAdminService(req.params.id)
   )
-  console.log("error", error)
+
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, 400, data))

@@ -30,6 +30,7 @@ class AdminAuthService {
     } else {
       password = await hashPassword(body.password)
     }
+    console.log("password", randomPassword)
     const signUp = await AdminRepository.create({ ...body, password })
 
     const substitutional_parameters = {
@@ -44,6 +45,8 @@ class AdminAuthService {
       substitutional_parameters,
       "ADMIN_ACCOUNT"
     )
+
+    delete signUp.password
 
     return { success: true, msg: authMessages.ADMIN_CREATED, data: signUp }
   }
@@ -110,6 +113,7 @@ class AdminAuthService {
   static async updateAdminService(data, params) {
     const { image, body } = data
     delete body?.accountType
+    // delete body.email
     const admin = await AdminRepository.updateAdminDetails(
       { _id: new mongoose.Types.ObjectId(params) },
       { ...body, image }
@@ -128,11 +132,11 @@ class AdminAuthService {
     }
   }
 
-  static async changePassword(body) {
+  static async changePassword(body, params) {
     const { prevPassword } = body
 
     const admin = await AdminRepository.fetchAdmin({
-      _id: new mongoose.Types.ObjectId(body.id),
+      _id: new mongoose.Types.ObjectId(params),
     })
 
     if (!admin) return { success: false, msg: authMessages.ADMIN_NOT_FOUND }
@@ -143,18 +147,10 @@ class AdminAuthService {
     if (!prevPasswordCheck)
       return { success: false, msg: authMessages.INCORRECT_PASSWORD }
 
-    //change password
-    if (body.password !== body.confirmPassword) {
-      return {
-        SUCCESS: false,
-        msg: "Passwords mismatch",
-      }
-    }
-
     let password = await hashPassword(body.password)
 
     const changePassword = await AdminRepository.updateAdminDetails(
-      { _id: new mongoose.Types.ObjectId(body.id) },
+      { _id: new mongoose.Types.ObjectId(params) },
       {
         password,
       }

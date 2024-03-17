@@ -9,17 +9,6 @@ const { SchoolClassRepository } = require("./schoolClass.repository")
 class SchoolClassService {
   static async createSchoolClass(payload, params) {
     const { body, image } = payload
-    const { name, level } = body
-    const validateSchoolClass = await SchoolClassRepository.validateSchoolClass(
-      {
-        name,
-        level,
-      }
-    )
-
-    if (validateSchoolClass)
-      return { success: false, msg: SchoolClassFailure.EXIST }
-
     const schoolClass = await SchoolClassRepository.create({
       ...body,
       branchId: new mongoose.Types.ObjectId(params?.branchId),
