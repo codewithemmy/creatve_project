@@ -14,6 +14,10 @@ const schoolClassSchema = new mongoose.Schema(
         ref: "Student",
       },
     ],
+    branchId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Branch",
+    },
     name: {
       type: String,
     },
