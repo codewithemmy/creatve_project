@@ -76,6 +76,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Admin",
     },
+    branchId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Branch",
+    },
     classId: {
       type: mongoose.Types.ObjectId,
       ref: "SchoolClass",
