@@ -80,6 +80,10 @@ const studentSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "SchoolClass",
     },
+    branchId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Branch",
+    },
     password: { type: String },
     accountType: {
       type: String,
