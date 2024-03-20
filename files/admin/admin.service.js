@@ -30,7 +30,7 @@ class AdminAuthService {
     } else {
       password = await hashPassword(body.password)
     }
-    console.log("password", randomPassword)
+
     const signUp = await AdminRepository.create({ ...body, password })
 
     const substitutional_parameters = {
