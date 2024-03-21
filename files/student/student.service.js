@@ -86,7 +86,7 @@ class StudentService {
     })
 
     if (students.length < 1)
-      return { success: false, msg: StudentFailure.FETCH }
+      return { success: true, msg: StudentFailure.FETCH, date: [] }
 
     return { success: true, msg: StudentSuccess.FETCH, data: students }
   }
