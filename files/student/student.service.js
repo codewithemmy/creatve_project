@@ -14,10 +14,13 @@ const { SchoolClassRepository } = require("../class/schoolClass.repository")
 class StudentService {
   static async createStudent(payload, params) {
     const { body, image } = payload
-    const { name, email, password, classId } = body
-    if (!classId)
-      return { success: false, msg: `Cannot create student without class` }
-    
+    const { name, email, password, intendedClass } = body
+    if (!intendedClass)
+      return {
+        success: false,
+        msg: `Cannot create student without intended class`,
+      }
+
     const validateStudent = await StudentRepository.validateStudent({
       name,
       email,
@@ -30,7 +33,6 @@ class StudentService {
     const student = await StudentRepository.create({
       ...body,
       profileImage: image,
-      classId,
       branchId: new mongoose.Types.ObjectId(params?.branchId),
       password: literalPassword,
     })

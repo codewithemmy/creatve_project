@@ -22,7 +22,9 @@ const studentSchema = new mongoose.Schema(
       type: String,
     },
     intendedClass: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "SchoolClass",
+      required: true,
     },
     gender: {
       type: String,

@@ -5,7 +5,6 @@ const {
   verifyPassword,
   generateOtp,
 } = require("../../../utils")
-const createHash = require("../../../utils/createHash")
 const { UserSuccess, UserFailure } = require("../user.messages")
 const { UserRepository } = require("../user.repository")
 
@@ -16,10 +15,10 @@ const { SchoolClassRepository } = require("../../class/schoolClass.repository")
 class UserService {
   static async createUser(payload, params) {
     const { body, image } = payload
-    const { name, email, password, classId } = body
+    const { name, email, password, intendedClass } = body
 
-    if (!classId)
-      return { success: false, msg: `Cannot create teacher without class` }
+    if (!intendedClass)
+      return { success: false, msg: `Cannot create teacher without intended class` }
 
     const userExist = await UserRepository.validateUser({
       email,
@@ -34,7 +33,6 @@ class UserService {
       ...body,
       profileImage: image,
       password: literalPassword,
-      classId,
       branchId: new mongoose.Types.ObjectId(params?.branchId),
     })
 

@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     intendedClass: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "SchoolClass",
+      required: true,
     },
     gender: {
       type: String,
@@ -79,10 +81,6 @@ const userSchema = new mongoose.Schema(
     branchId: {
       type: mongoose.Types.ObjectId,
       ref: "Branch",
-    },
-    classId: {
-      type: mongoose.Types.ObjectId,
-      ref: "SchoolClass",
     },
     password: { type: String },
     accountType: {
