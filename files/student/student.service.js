@@ -39,29 +39,30 @@ class StudentService {
 
     if (!student._id) return { success: false, msg: StudentFailure.CREATE }
 
-    if (classId) {
-      await SchoolClassRepository.updateSchoolClassDetails(
-        {
-          _id: new mongoose.Types.ObjectId(classId),
-        },
-        {
-          $push: { teacher: new mongoose.Types.ObjectId(user._id) },
-        }
-      )
-    }
+    try {
+      const substitutional_parameters = {
+        name: name,
+        password: password,
+        email: email,
+      }
 
-    const substitutional_parameters = {
-      name: name,
-      password: password,
-      email: email,
+      Promise.all([
+        await sendMailNotification(
+          email,
+          "WELCOME TO CREATIVE SCHOOL",
+          substitutional_parameters,
+          "CREATIVE_WELCOME"
+        ),
+        await sendMailNotification(
+          params.email,
+          "WELCOME TO CREATIVE SCHOOL",
+          { email: email, name: body.name, password: password, email: email },
+          "STUDENT_CREATED"
+        ),
+      ])
+    } catch (error) {
+      console.log("error", error)
     }
-
-    await sendMailNotification(
-      email,
-      "WELCOME TO CREATIVE SCHOOL",
-      substitutional_parameters,
-      "CREATIVE_WELCOME"
-    )
 
     return {
       success: true,

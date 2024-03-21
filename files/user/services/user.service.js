@@ -18,7 +18,10 @@ class UserService {
     const { name, email, password, intendedClass } = body
 
     if (!intendedClass)
-      return { success: false, msg: `Cannot create teacher without intended class` }
+      return {
+        success: false,
+        msg: `Cannot create teacher without intended class`,
+      }
 
     const userExist = await UserRepository.validateUser({
       email,
@@ -38,29 +41,30 @@ class UserService {
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }
 
-    if (classId) {
-      await SchoolClassRepository.updateSchoolClassDetails(
-        {
-          _id: new mongoose.Types.ObjectId(classId),
-        },
-        {
-          $push: { teacher: new mongoose.Types.ObjectId(user._id) },
-        }
-      )
-    }
+    try {
+      const substitutional_parameters = {
+        name: name,
+        password: password,
+        email: email,
+      }
 
-    const substitutional_parameters = {
-      name: name,
-      password: password,
-      email: email,
+      Promise.all([
+        await sendMailNotification(
+          email,
+          "WELCOME TO CREATIVE SCHOOL",
+          substitutional_parameters,
+          "CREATIVE_WELCOME"
+        ),
+        await sendMailNotification(
+          params.email,
+          "WELCOME TO CREATIVE SCHOOL",
+          { email: email, name: body.name, password: password, email: email },
+          "STUDENT_CREATED"
+        ),
+      ])
+    } catch (error) {
+      console.log("error", error)
     }
-
-    await sendMailNotification(
-      email,
-      "WELCOME TO CREATIVE SCHOOL",
-      substitutional_parameters,
-      "CREATIVE_WELCOME"
-    )
 
     return {
       success: true,
