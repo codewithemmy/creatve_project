@@ -39,6 +39,13 @@ class StudentService {
 
     if (!student._id) return { success: false, msg: StudentFailure.CREATE }
 
+    if (student) {
+      await SchoolClassRepository.updateSchoolClassDetails(
+        { _id: new mongoose.Types.ObjectId(body.intendedClass) },
+        { $push: { studentId: student._id } }
+      )
+    }
+
     try {
       const substitutional_parameters = {
         name: name,

@@ -2,6 +2,18 @@ const mongoose = require("mongoose")
 
 const schoolClassSchema = new mongoose.Schema(
   {
+    studentId: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
+    teacherId: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     branchId: {
       type: mongoose.Types.ObjectId,
       ref: "Branch",

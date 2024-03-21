@@ -24,6 +24,8 @@ class SchoolClassRepository {
     const { limit, skip, sort, ...restOfPayload } = payload
 
     const schoolClass = await SchoolClass.find({ ...restOfPayload })
+      .populate({ path: "studentId" })
+      .populate({ path: "teacherId" })
       .sort(sort)
       .skip(skip)
       .limit(limit)
