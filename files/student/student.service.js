@@ -15,6 +15,9 @@ class StudentService {
   static async createStudent(payload, params) {
     const { body, image } = payload
     const { name, email, password, classId } = body
+    if (!classId)
+      return { success: false, msg: `Cannot create student without class` }
+    
     const validateStudent = await StudentRepository.validateStudent({
       name,
       email,

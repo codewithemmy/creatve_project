@@ -1,5 +1,5 @@
 const adminRoute = require("express").Router()
-const { isAuthenticated, adminVerifier } = require("../../utils/index")
+const { isAuthenticated } = require("../../utils/index")
 const { uploadManager } = require("../../utils/multer")
 
 const {
@@ -15,7 +15,7 @@ const {
 adminRoute.route("/").post(adminSignUpController)
 adminRoute.route("/login").post(adminLogin)
 
-//authenticated route 
+//authenticated route
 adminRoute.use(isAuthenticated)
 adminRoute.route("/").get(getAdminController)
 adminRoute.route("/:id").delete(deleteAdminController)

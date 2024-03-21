@@ -14,7 +14,10 @@ const { sendMailNotification } = require("../../utils/email")
 
 class AdminAuthService {
   static async adminSignUpService(body) {
-    const { accountType } = body
+    const { accountType, branchId } = body
+    if (!branchId)
+      return { success: false, msg: `Cannot create admin without a branch` }
+
     const admin = await AdminRepository.fetchAdmin({
       email: body.email,
     })

@@ -18,6 +18,9 @@ class UserService {
     const { body, image } = payload
     const { name, email, password, classId } = body
 
+    if (!classId)
+      return { success: false, msg: `Cannot create teacher without class` }
+
     const userExist = await UserRepository.validateUser({
       email,
       name,
