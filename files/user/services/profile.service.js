@@ -17,10 +17,12 @@ const {
 } = require("../messages/profile.messages")
 
 class ProfileService {
-  static async updateProfileService(id, payload) {
+  static async updateProfileService(id, payload, locals) {
     const { body, image } = payload
 
-    delete body.email
+    if (!locals.isAdmin) {
+      delete body.email
+    }
 
     const userprofile = await UserRepository.updateUserDetails(
       { _id: new mongoose.Types.ObjectId(id) },
