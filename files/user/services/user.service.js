@@ -21,7 +21,7 @@ class UserService {
         success: false,
         msg: `Cannot create teacher without intended class`,
       }
-
+//new changes
     // const userExist = await UserRepository.validateUser({
     //   email,
     //   name,
