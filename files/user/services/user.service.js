@@ -22,12 +22,12 @@ class UserService {
         msg: `Cannot create teacher without intended class`,
       }
 
-    const userExist = await UserRepository.validateUser({
-      email,
-      name,
-    })
+    // const userExist = await UserRepository.validateUser({
+    //   email,
+    //   name,
+    // })
 
-    if (userExist) return { success: false, msg: UserFailure.EXIST }
+    // if (userExist) return { success: false, msg: UserFailure.EXIST }
 
     let literalPassword = await hashPassword(password)
 
