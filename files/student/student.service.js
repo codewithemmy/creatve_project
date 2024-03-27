@@ -21,12 +21,12 @@ class StudentService {
         msg: `Cannot create student without intended class`,
       }
 
-    const validateStudent = await StudentRepository.validateStudent({
-      name,
-      email,
-    })
+    // const validateStudent = await StudentRepository.validateStudent({
+    //   name,
+    //   email,
+    // })
 
-    if (validateStudent) return { success: true, msg: StudentFailure.EXIST }
+    // if (validateStudent) return { success: true, msg: StudentFailure.EXIST }
 
     let literalPassword = await hashPassword(password)
 
