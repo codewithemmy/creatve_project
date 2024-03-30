@@ -85,10 +85,13 @@ class StudentService {
     return { success: true, msg: StudentSuccess.FETCH, data: students }
   }
 
-  static async updateStudent(payload, id) {
+  static async updateStudent(payload, id, locals) {
     const { body, image } = payload
 
-    delete body.email
+    if (!locals.isAdmin) {
+      delete body.email
+    }
+
     const findStudent = await StudentRepository.findSingleStudentWithParams({
       _id: new mongoose.Types.ObjectId(id),
     })

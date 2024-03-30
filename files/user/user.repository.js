@@ -34,7 +34,8 @@ class UserRepository {
   static async updateUserDetails(id, params) {
     return User.findOneAndUpdate(
       { ...id },
-      { ...params } //returns details about the update
+      { ...params },
+      { new: true, runValidators: true }
     )
   }
 

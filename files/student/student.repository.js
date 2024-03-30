@@ -34,7 +34,8 @@ class StudentRepository {
   static async updateStudentDetails(id, params) {
     return Student.findOneAndUpdate(
       { ...id },
-      { ...params } //returns details about the update
+      { ...params },
+      { new: true, runValidators: true }
     )
   }
 

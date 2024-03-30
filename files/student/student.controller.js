@@ -32,7 +32,7 @@ const getStudentController = async (req, res, next) => {
 const updateStudentController = async (req, res, next) => {
   const value = await fileModifier(req)
   const [error, data] = await manageAsyncOps(
-    StudentService.updateStudent(value, req.params.id)
+    StudentService.updateStudent(value, req.params.id, res.locals.jwt)
   )
 
   if (error) return next(error)
