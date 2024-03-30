@@ -10,24 +10,10 @@ const { UserRepository } = require("../user.repository")
 const { sendMailNotification } = require("../../../utils/email")
 const { SchoolClassRepository } = require("../../class/schoolClass.repository")
 
-// const { sendMailNotification } = require("../../../utils/email")
 class UserService {
   static async createUser(payload, params) {
     const { body, image } = payload
     const { name, email, password, intendedClass } = body
-
-    if (!intendedClass)
-      return {
-        success: false,
-        msg: `Cannot create teacher without intended class`,
-      }
-//new changes
-    // const userExist = await UserRepository.validateUser({
-    //   email,
-    //   name,
-    // })
-
-    // if (userExist) return { success: false, msg: UserFailure.EXIST }
 
     let literalPassword = await hashPassword(password)
 

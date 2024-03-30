@@ -1,13 +1,7 @@
 const { default: mongoose } = require("mongoose")
-const {
-  hashPassword,
-  verifyPassword,
-  queryConstructor,
-} = require("../../utils")
-const createHash = require("../../utils/createHash")
+const { hashPassword, queryConstructor } = require("../../utils")
 const { StudentSuccess, StudentFailure } = require("./student.messages")
 const { StudentRepository } = require("./student.repository")
-const { LIMIT, SKIP, SORT } = require("../../constants")
 const { sendMailNotification } = require("../../utils/email")
 const { SchoolClassRepository } = require("../class/schoolClass.repository")
 
