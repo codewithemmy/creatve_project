@@ -26,7 +26,7 @@ class UserService {
 
     if (!user._id) return { success: false, msg: UserFailure.CREATE }
 
-    if (user) {
+    if (intendedClass) {
       await SchoolClassRepository.updateSchoolClassDetails(
         { _id: new mongoose.Types.ObjectId(body.intendedClass) },
         { $push: { teacherId: user._id } }
