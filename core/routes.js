@@ -5,6 +5,8 @@ const adminRoute = require("../files/admin/admin.routes")
 const branchRoute = require("../files/branch/branch.route")
 const studentRoute = require("../files/student/student.route")
 const schoolClassRoute = require("../files/class/schoolClass.route")
+const subjectRoute = require("../files/subject/subject.route")
+const recordRoute = require("../files/record/record.route")
 
 const routes = (app) => {
   const base_url = "/api/v1"
@@ -16,6 +18,8 @@ const routes = (app) => {
   app.use(`${base_url}/branch`, branchRoute)
   app.use(`${base_url}/student`, studentRoute)
   app.use(`${base_url}/class`, schoolClassRoute)
+  app.use(`${base_url}/subject`, subjectRoute)
+  app.use(`${base_url}/record`, recordRoute)
 }
 
 module.exports = routes

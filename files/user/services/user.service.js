@@ -91,7 +91,9 @@ class UserService {
       _id: userProfile._id,
       name: userProfile.name,
       email: userProfile.email,
-      accounttype: userProfile.accountType,
+      accountType: userProfile.accountType,
+      intendedClass: userProfile.intendedClass,
+      branchId: userProfile.branchId,
       ...token,
     }
 

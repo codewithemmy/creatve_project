@@ -1,6 +1,6 @@
 module.exports.BranchSuccess = {
   CREATE: "Branch successfully created",
-  FETCH: "Brach successfully fetched",
+  FETCH: "Branch successfully fetched",
   UPDATE: "Update Successful",
   DELETE: "Delete Successful",
 }
