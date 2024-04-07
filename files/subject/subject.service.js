@@ -64,7 +64,7 @@ class SubjectService {
     }
   }
 
-  static async getSubjectService(payload) {
+  static async getSubjectService(payload, local) {
     const { error, params, limit, skip, sort } = queryConstructor(
       payload,
       "createdAt",
@@ -72,8 +72,14 @@ class SubjectService {
     )
     if (error) return { success: false, msg: error }
 
+    let extra = {}
+    if (params.class) {
+      extra = { branchId: new mongoose.Types.ObjectId(local) }
+    }
+
     const subject = await SubjectRepository.findAllSubjectParams({
       ...params,
+      ...extra,
       limit,
       skip,
       sort,

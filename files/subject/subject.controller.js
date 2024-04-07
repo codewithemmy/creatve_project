@@ -18,7 +18,7 @@ const createSubjectController = async (req, res, next) => {
 
 const getSubjectController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
-    SubjectService.getSubjectService(req.query)
+    SubjectService.getSubjectService(req.query, res.locals.jwt.branchId)
   )
 
   if (error) return next(error)
@@ -30,7 +30,7 @@ const getSubjectController = async (req, res, next) => {
 
 const updateSubjectController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
-    SubjectService.updateSubjectService(value, req.params.id)
+    SubjectService.updateSubjectService(req.body, req.params.id)
   )
 
   if (error) return next(error)
