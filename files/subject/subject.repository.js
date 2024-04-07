@@ -24,6 +24,11 @@ class SubjectRepository {
     const { limit, skip, sort, ...restOfPayload } = payload
 
     const subject = Subject.find({ ...restOfPayload })
+      .populate({
+        path: "branchId",
+        select: "_id branchName location address",
+      })
+      .populate({ path: "classId", select: "name tag _id" })
       .sort(sort)
       .skip(skip)
       .limit(limit)
