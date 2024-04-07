@@ -1,17 +1,17 @@
 const { default: mongoose } = require("mongoose")
 const { queryConstructor } = require("../../utils")
 const { RecordSuccess, RecordFailure } = require("./record.messages")
-const { SubjectRepository, RecordRepository } = require("./record.repository")
+const { RecordRepository } = require("./record.repository")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
+    const { testOne, testTwo, testThree, examScore } = recordPayload
     if (!recordPayload.schoolTerm)
       return { success: false, msg: `School term cannot be blank` }
 
     if (
-      locals.accountType !== "teacher" ||
-      !locals.branchId ||
-      !locals.intendedClass
+      // locals.accountType !== "teacher" ||
+      !locals.branchId
     )
       return {
         success: false,
@@ -27,8 +27,11 @@ class RecordService {
 
     if (confirmRecord) return { success: false, msg: RecordFailure.EXIST }
 
-    const record = await SubjectRepository.create({
-      ...RecordRepository,
+    const record = await RecordRepository.create({
+      testOne: testOne ? Number(recordPayload.testOne) : 0,
+      testTwo: testTwo ? Number(recordPayload.testTwo) : 0,
+      testThree: testThree ? Number(recordPayload.testThree) : 0,
+      examScore: examScore ? Number(recordPayload.examScore) : 0,
       classId: new mongoose.Types.ObjectId(recordPayload.classId),
       studentId: new mongoose.Types.ObjectId(recordPayload.studentId),
       branchId: new mongoose.Types.ObjectId(locals.branchId),

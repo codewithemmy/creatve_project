@@ -30,7 +30,7 @@ const getRecordController = async (req, res, next) => {
 
 const updateRecordController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
-    RecordService.updateRecordService(value, req.params.id)
+    RecordService.updateRecordService(req.body, req.params.id)
   )
 
   if (error) return next(error)
