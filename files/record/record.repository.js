@@ -22,7 +22,7 @@ class RecordRepository {
     const record = Record.find({ ...restOfPayload })
       .populate({ path: "branchId" })
       .populate({ path: "studentId" })
-      .populate({ path: "subejctId" })
+      .populate({ path: "subjectId" })
       .sort(sort)
       .skip(skip)
       .limit(limit)
