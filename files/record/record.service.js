@@ -5,23 +5,27 @@ const { RecordRepository } = require("./record.repository")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
-    const { testOne, testTwo, testThree, examScore } = recordPayload
+    const { testOne, testTwo, testThree, examScore, subjectId } = recordPayload
     if (!recordPayload.schoolTerm)
       return { success: false, msg: `School term cannot be blank` }
 
-    if (
-      // locals.accountType !== "teacher" ||
-      !locals.branchId
-    )
+    if (!locals.branchId)
       return {
         success: false,
         msg: `Only teachers with a class and branch are allowed to create record`,
+      }
+
+    if (!subjectId)
+      return {
+        success: false,
+        msg: `Subject cannot be empty`,
       }
 
     const confirmRecord = await RecordRepository.validateRecord({
       ...recordPayload,
       classId: new mongoose.Types.ObjectId(recordPayload.classId),
       studentId: new mongoose.Types.ObjectId(recordPayload.studentId),
+      subjectId: new mongoose.Types.ObjectId(recordPayload.subjectId),
       branchId: new mongoose.Types.ObjectId(locals.branchId),
     })
 
@@ -33,6 +37,7 @@ class RecordService {
       testThree: testThree ? Number(recordPayload.testThree) : 0,
       examScore: examScore ? Number(recordPayload.examScore) : 0,
       classId: new mongoose.Types.ObjectId(recordPayload.classId),
+      subjectId: new mongoose.Types.ObjectId(recordPayload.subjectId),
       studentId: new mongoose.Types.ObjectId(recordPayload.studentId),
       branchId: new mongoose.Types.ObjectId(locals.branchId),
     })

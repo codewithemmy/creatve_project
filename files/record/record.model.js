@@ -5,6 +5,7 @@ const recordSchema = new mongoose.Schema(
     classId: { type: mongoose.Types.ObjectId, ref: "SchoolClass" },
     branchId: { type: mongoose.Types.ObjectId, ref: "Branch" },
     studentId: { type: mongoose.Types.ObjectId, ref: "Student" },
+    subjectId: { type: mongoose.Types.ObjectId, ref: "Subject" },
     testOne: { type: Number, default: 0 },
     testTwo: { type: Number, default: 0 },
     testThree: { type: Number, default: 0 },

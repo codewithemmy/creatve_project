@@ -20,6 +20,9 @@ class RecordRepository {
     const { limit, skip, sort, ...restOfPayload } = payload
 
     const record = Record.find({ ...restOfPayload })
+      .populate({ path: "branchId" })
+      .populate({ path: "studentId" })
+      .populate({ path: "subejctId" })
       .sort(sort)
       .skip(skip)
       .limit(limit)
