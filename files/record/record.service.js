@@ -5,7 +5,8 @@ const { RecordRepository } = require("./record.repository")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
-    const { testOne, testTwo, testThree, examScore, subjectId } = recordPayload
+    const { resumptionTest, midTermTest, project, examScore, subjectId } =
+      recordPayload
     if (!recordPayload.schoolTerm)
       return { success: false, msg: `School term cannot be blank` }
 
@@ -32,9 +33,9 @@ class RecordService {
     if (confirmRecord) return { success: false, msg: RecordFailure.EXIST }
 
     const record = await RecordRepository.create({
-      testOne: testOne ? Number(recordPayload.testOne) : 0,
-      testTwo: testTwo ? Number(recordPayload.testTwo) : 0,
-      testThree: testThree ? Number(recordPayload.testThree) : 0,
+      resumptionTest: resumptionTest ? Number(recordPayload.resumptionTest) : 0,
+      midTermTest: midTermTest ? Number(recordPayload.midTermTest) : 0,
+      project: project ? Number(recordPayload.project) : 0,
       examScore: examScore ? Number(recordPayload.examScore) : 0,
       classId: new mongoose.Types.ObjectId(recordPayload.classId),
       subjectId: new mongoose.Types.ObjectId(recordPayload.subjectId),

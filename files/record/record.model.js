@@ -6,18 +6,18 @@ const recordSchema = new mongoose.Schema(
     branchId: { type: mongoose.Types.ObjectId, ref: "Branch" },
     studentId: { type: mongoose.Types.ObjectId, ref: "Student" },
     subjectId: { type: mongoose.Types.ObjectId, ref: "Subject" },
-    testOne: { type: Number, default: 0 },
-    testTwo: { type: Number, default: 0 },
-    testThree: { type: Number, default: 0 },
+    resumptionTest: { type: Number, default: 0 },
+    midTermTest: { type: Number, default: 0 },
+    project: { type: Number, default: 0 },
     grade: { type: Number, default: 0 },
     examScore: { type: Number, default: 0 },
     totalScore: {
       type: Number,
       default: function () {
         return (
-          (this.testOne || 0) +
-          (this.testTwo || 0) +
-          (this.testThree || 0) +
+          (this.resumptionTest || 0) +
+          (this.midTermTest || 0) +
+          (this.project || 0) +
           (this.examScore || 0)
         )
       },
@@ -32,13 +32,15 @@ recordSchema.pre("findOneAndUpdate", function (next) {
   const update = this.getUpdate()
   // Calculate totalScore based on updated values
   const updatedTestOne =
-    update.testOne !== undefined ? update.testOne : this.getQuery().$set.testOne
+    update.resumptionTest !== undefined
+      ? update.resumptionTest
+      : this.getQuery().$set.resumptionTest
   const updatedTestTwo =
-    update.testTwo !== undefined ? update.testTwo : this.getQuery().$set.testTwo
+    update.midTermTest !== undefined
+      ? update.midTermTest
+      : this.getQuery().$set.midTermTest
   const updatedTestThree =
-    update.testThree !== undefined
-      ? update.testThree
-      : this.getQuery().$set.testThree
+    update.project !== undefined ? update.project : this.getQuery().$set.project
   const updatedExamScore =
     update.examScore !== undefined
       ? update.examScore

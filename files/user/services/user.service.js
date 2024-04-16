@@ -83,7 +83,12 @@ class UserService {
     userProfile.password = undefined
 
     token = await tokenHandler({
-      ...userProfile,
+      _id: userProfile._id,
+      name: userProfile.name,
+      email: userProfile.email,
+      accountType: userProfile.accountType,
+      intendedClass: userProfile.intendedClass,
+      branchId: userProfile.branchId,
       isAdmin: false,
     })
 
