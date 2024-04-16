@@ -34,17 +34,17 @@ recordSchema.pre("findOneAndUpdate", function (next) {
   const updatedTestOne =
     update.resumptionTest !== undefined
       ? update.resumptionTest
-      : this.getQuery().$set.resumptionTest
+      : this.getQuery().$set?.resumptionTest
   const updatedTestTwo =
     update.midTermTest !== undefined
       ? update.midTermTest
-      : this.getQuery().$set.midTermTest
+      : this.getQuery().$set?.midTermTest
   const updatedTestThree =
     update.project !== undefined ? update.project : this.getQuery().$set.project
   const updatedExamScore =
     update.examScore !== undefined
       ? update.examScore
-      : this.getQuery().$set.examScore
+      : this.getQuery().$set?.examScore
   update.totalScore =
     (updatedTestOne || 0) +
     (updatedTestTwo || 0) +
