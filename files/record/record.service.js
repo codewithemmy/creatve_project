@@ -5,8 +5,14 @@ const { RecordRepository } = require("./record.repository")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
-    const { resumptionTest, midTermTest, project, examScore, subjectId } =
-      recordPayload
+    const {
+      resumptionTest,
+      midTermTest,
+      project,
+      examScore,
+      subjectId,
+      schoolTerm,
+    } = recordPayload
     if (!recordPayload.schoolTerm)
       return { success: false, msg: `School term cannot be blank` }
 
@@ -14,6 +20,11 @@ class RecordService {
       return {
         success: false,
         msg: `Only teachers with a class and branch are allowed to create record`,
+      }
+    if (!schoolTerm)
+      return {
+        success: false,
+        msg: `School term cannot be empty`,
       }
 
     if (!subjectId)
