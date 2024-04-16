@@ -7,7 +7,7 @@ const {
   updateRecordController,
 } = require("./record.controller")
 
-recordRoute.use(isAuthenticated)
+// recordRoute.use(isAuthenticated)
 
 //routes
 recordRoute.route("/").post(createRecordController)

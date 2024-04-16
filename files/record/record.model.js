@@ -22,7 +22,11 @@ const recordSchema = new mongoose.Schema(
         )
       },
     },
-    schoolTerm: { type: String, enum: ["first", "second", "third"] },
+    schoolTerm: {
+      type: String,
+      enum: ["first", "second", "third"],
+      required: true,
+    },
   },
   { timestamps: true }
 )

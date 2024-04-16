@@ -44,6 +44,7 @@ class RecordService {
     if (confirmRecord) return { success: false, msg: RecordFailure.EXIST }
 
     const record = await RecordRepository.create({
+      schoolTerm,
       resumptionTest: resumptionTest ? Number(recordPayload.resumptionTest) : 0,
       midTermTest: midTermTest ? Number(recordPayload.midTermTest) : 0,
       project: project ? Number(recordPayload.project) : 0,
