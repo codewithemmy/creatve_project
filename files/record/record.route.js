@@ -7,11 +7,11 @@ const {
   updateRecordController,
 } = require("./record.controller")
 
-// recordRoute.use(isAuthenticated)
+recordRoute.route("/").get(getRecordController)
+recordRoute.use(isAuthenticated)
 
 //routes
 recordRoute.route("/").post(createRecordController)
-recordRoute.route("/").get(getRecordController)
 recordRoute.route("/:id").patch(updateRecordController)
 
 module.exports = recordRoute
