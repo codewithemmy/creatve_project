@@ -33,6 +33,18 @@ class RecordService {
         msg: `Subject cannot be empty`,
       }
 
+    const userSubject = await RecordRepository.validateRecord({
+      schoolTerm,
+      studentId: new mongoose.Types.ObjectId(recordPayload.studentId),
+      subjectId: new mongoose.Types.ObjectId(recordPayload.subjectId),
+    })
+
+    if (userSubject)
+      return {
+        success: false,
+        msg: `Record for Subject already added for student for this term`,
+      }
+
     const confirmRecord = await RecordRepository.validateRecord({
       ...recordPayload,
       classId: new mongoose.Types.ObjectId(recordPayload.classId),
