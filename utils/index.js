@@ -224,6 +224,40 @@ const generateOtp = () => {
   return { otp, expiry }
 }
 
+const gradeCalculation = (score) => {
+  let grade
+  let customGrade
+  if (score >= 95 && score <= 100) {
+    grade = "A+"
+    customGrade = "Diamond"
+  } else if (score >= 85 && score < 95) {
+    grade = "A"
+    customGrade = "Diamond"
+  } else if (score >= 75 && score < 85) {
+    grade = "B+"
+    customGrade = "Gold"
+  } else if (score >= 65 && score < 75) {
+    grade = "B"
+    customGrade = "Gold"
+  } else if (score >= 55 && score < 65) {
+    grade = "C+"
+    customGrade = "Silver"
+  } else if (score >= 45 && score < 55) {
+    grade = "C"
+    customGrade = "Silver"
+  } else if (score >= 35 && score < 45) {
+    grade = "D"
+    customGrade = "Bronze"
+  } else if (score >= 25 && score < 35) {
+    grade = "Fail"
+    customGrade = "Fail"
+  } else {
+    return "Invalid score"
+  }
+
+  return { grade, customGrade }
+}
+
 module.exports = {
   tokenHandler,
   adminVerifier,
@@ -239,4 +273,5 @@ module.exports = {
   manageAsyncOps,
   verifyWhoAmI,
   generateOtp,
+  gradeCalculation,
 }

@@ -9,7 +9,8 @@ const recordSchema = new mongoose.Schema(
     resumptionTest: { type: Number, default: 0 },
     midTermTest: { type: Number, default: 0 },
     project: { type: Number, default: 0 },
-    grade: { type: Number, default: 0 },
+    grade: { type: String },
+    customGrade: { type: String },
     examScore: { type: Number, default: 0 },
     totalScore: {
       type: Number,

@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose")
-const { queryConstructor } = require("../../utils")
+const { queryConstructor, gradeCalculation } = require("../../utils")
 const { RecordSuccess, RecordFailure } = require("./record.messages")
 const { RecordRepository } = require("./record.repository")
 
@@ -69,6 +69,12 @@ class RecordService {
 
     if (!record._id) return { success: false, msg: RecordFailure.CREATE }
 
+    const { grade, customGrade } = gradeCalculation(Number(record.totalScore))
+
+    record.grade = grade
+    record.customGrade = customGrade
+    await record.save()
+
     return {
       success: true,
       msg: RecordSuccess.CREATE,
@@ -84,6 +90,12 @@ class RecordService {
     )
 
     if (!record) return { success: false, msg: RecordFailure.UPDATE }
+
+    const { grade, customGrade } = gradeCalculation(Number(record.totalScore))
+
+    record.grade = grade
+    record.customGrade = customGrade
+    await record.save()
 
     return {
       success: true,
