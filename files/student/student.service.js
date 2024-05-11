@@ -98,6 +98,12 @@ class StudentService {
 
     if (!findStudent) return { success: false, msg: StudentFailure.FETCH }
 
+    if (body.intendedClass && !body.previousClass)
+      return {
+        success: false,
+        msg: `Student previous class must be added to new intended class`,
+      }
+
     const student = await StudentRepository.updateStudentDetails(
       { _id: new mongoose.Types.ObjectId(id) },
       {
@@ -108,6 +114,19 @@ class StudentService {
 
     if (!student) return { success: false, msg: StudentFailure.UPDATE }
 
+    if (student && body.intendedClass) {
+      await Promise.all([
+        SchoolClassRepository.updateSchoolClassDetails(
+          { _id: new mongoose.Types.ObjectId(body.previousClass) },
+          { $pull: { studentId: student._id } }
+        ),
+
+        SchoolClassRepository.updateSchoolClassDetails(
+          { _id: new mongoose.Types.ObjectId(body.intendedClass) },
+          { $push: { studentId: student._id } }
+        ),
+      ])
+    }
     return {
       success: true,
       msg: StudentSuccess.UPDATE,

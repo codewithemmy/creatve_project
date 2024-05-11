@@ -10,8 +10,8 @@ const {
 } = require("./student.controller")
 
 studentRoute.use(isAuthenticated)
-//routes
 
+//routes
 studentRoute
   .route("/")
   .post(uploadManager("image").single("single"), createStudentController)
