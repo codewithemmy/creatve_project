@@ -92,6 +92,11 @@ class StudentService {
       delete body.email
     }
 
+    let status = "active"
+    if (body.status) {
+      status = body.status
+    }
+
     const findStudent = await StudentRepository.findSingleStudentWithParams({
       _id: new mongoose.Types.ObjectId(id),
     })
@@ -102,6 +107,7 @@ class StudentService {
       { _id: new mongoose.Types.ObjectId(id) },
       {
         ...body,
+        status,
         profileImage: image,
       }
     )

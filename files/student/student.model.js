@@ -91,6 +91,10 @@ const studentSchema = new mongoose.Schema(
       type: String,
       enum: ["student"],
     },
+    status: {
+      type: String,
+      default: "active",
+    },
     isDelete: {
       type: Boolean,
       default: false,
