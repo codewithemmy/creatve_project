@@ -17,6 +17,18 @@ const createStudentController = async (req, res, next) => {
   return responseHandler(res, SUCCESS, data)
 }
 
+const studentLoginController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    StudentService.studentLogin(req.body)
+  )
+  console.log("nowworking")
+  if (error) return next(error)
+
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+
+  return responseHandler(res, SUCCESS, data)
+}
+
 const getStudentController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     StudentService.getStudent(req.query)
@@ -72,4 +84,5 @@ module.exports = {
   updateStudentController,
   studentImageController,
   deleteStudentController,
+  studentLoginController,
 }

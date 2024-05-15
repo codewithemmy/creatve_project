@@ -1,5 +1,10 @@
 const { default: mongoose } = require("mongoose")
-const { hashPassword, queryConstructor } = require("../../utils")
+const {
+  hashPassword,
+  queryConstructor,
+  verifyPassword,
+  tokenHandler,
+} = require("../../utils")
 const { StudentSuccess, StudentFailure } = require("./student.messages")
 const { StudentRepository } = require("./student.repository")
 const { sendMailNotification } = require("../../utils/email")
@@ -61,6 +66,52 @@ class StudentService {
     return {
       success: true,
       msg: StudentSuccess.CREATE,
+    }
+  }
+
+  static async studentLogin(payload) {
+    const { email, password } = payload
+
+    const studentProfile = await StudentRepository.findSingleStudentWithParams({
+      email: email,
+    })
+
+    if (!studentProfile)
+      return { success: false, msg: StudentFailure.NOT_FOUND }
+
+    const isPassword = await verifyPassword(password, studentProfile.password)
+
+    if (!isPassword) return { success: false, msg: `invalid password` }
+
+    let token
+
+    studentProfile.password = undefined
+
+    token = await tokenHandler({
+      _id: studentProfile._id,
+      name: studentProfile.name,
+      email: studentProfile.email,
+      accountType: studentProfile.accountType,
+      intendedClass: studentProfile.intendedClass,
+      branchId: studentProfile.branchId,
+      isAdmin: false,
+    })
+
+    const student = {
+      _id: studentProfile._id,
+      name: studentProfile.name,
+      email: studentProfile.email,
+      accountType: studentProfile.accountType,
+      intendedClass: studentProfile.intendedClass,
+      branchId: studentProfile.branchId,
+      ...token,
+    }
+
+    //return result
+    return {
+      success: true,
+      msg: StudentSuccess.FETCH,
+      data: student,
     }
   }
 

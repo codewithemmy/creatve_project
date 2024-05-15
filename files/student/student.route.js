@@ -7,10 +7,12 @@ const {
   updateStudentController,
   studentImageController,
   deleteStudentController,
+  studentLoginController,
 } = require("./student.controller")
 
-studentRoute.use(isAuthenticated)
+studentRoute.route("/login").post(studentLoginController)
 
+studentRoute.use(isAuthenticated)
 //routes
 studentRoute
   .route("/")
