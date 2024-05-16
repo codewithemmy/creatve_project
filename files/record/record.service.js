@@ -121,6 +121,18 @@ class RecordService {
     if (record.length < 1)
       return { success: true, msg: RecordFailure.FETCH, data: [] }
 
+    if (params.studentId && params.classId && params.schoolTerm) {
+      const termTotalScore = record.reduce((total, score) => {
+        return total + score.totalScore
+      }, 0)
+
+      return {
+        success: true,
+        msg: RecordSuccess.FETCH,
+        data: record,
+        termTotalScore,
+      }
+    }
     return { success: true, msg: RecordSuccess.FETCH, data: record }
   }
 }

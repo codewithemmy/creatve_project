@@ -21,7 +21,10 @@ class RecordRepository {
 
     const record = Record.find({ ...restOfPayload })
       .populate({ path: "branchId" })
-      .populate({ path: "studentId" })
+      .populate({
+        path: "studentId",
+        select: "name email intendedClass parentName profileImage",
+      })
       .populate({ path: "subjectId" })
       .sort(sort)
       .skip(skip)
