@@ -37,6 +37,7 @@ class RecordService {
       schoolTerm,
       studentId: new mongoose.Types.ObjectId(recordPayload.studentId),
       subjectId: new mongoose.Types.ObjectId(recordPayload.subjectId),
+      classId: new mongoose.Types.ObjectId(recordPayload.classId),
     })
 
     if (userSubject)
