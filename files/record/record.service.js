@@ -119,6 +119,7 @@ class RecordService {
       sort,
     })
     let termTotalScore
+
     if (record.length < 1)
       return { success: true, msg: RecordFailure.FETCH, data: [] }
 
@@ -147,10 +148,11 @@ class RecordService {
 
         // If the studentId already exists in the accumulator, update the score
         if (existingIndex !== -1) {
-          accumulator[existingIndex].totalScore += score
+          accumulator[existingIndex].termTotalScore += score
         } else {
           // If the studentId doesn't exist, push a new object
           const { _doc, ...restOfCurrentValue } = currentValue
+
           accumulator.push({
             ..._doc,
             termTotalScore: score,
