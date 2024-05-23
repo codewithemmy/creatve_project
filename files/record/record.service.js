@@ -118,12 +118,12 @@ class RecordService {
       skip,
       sort,
     })
-
+    let termTotalScore
     if (record.length < 1)
       return { success: true, msg: RecordFailure.FETCH, data: [] }
 
     if (params.studentId && params.classId && params.schoolTerm) {
-      const termTotalScore = record.reduce((total, score) => {
+      termTotalScore = record.reduce((total, score) => {
         return total + score.totalScore
       }, 0)
 
@@ -134,7 +134,44 @@ class RecordService {
         termTotalScore,
       }
     }
-    return { success: true, msg: RecordSuccess.FETCH, data: record }
+    if (params.classId) {
+      // Perform reduce to get total score based on studentId._id
+      termTotalScore = record.reduce((accumulator, currentValue) => {
+        const studentId = currentValue.studentId._id
+        const score = currentValue.totalScore
+
+        // Check if there's already an entry for this studentId
+        const existingIndex = accumulator.findIndex(
+          (item) => item.studentId === studentId
+        )
+
+        // If the studentId already exists in the accumulator, update the score
+        if (existingIndex !== -1) {
+          accumulator[existingIndex].totalScore += score
+        } else {
+          // If the studentId doesn't exist, push a new object
+          const { _doc, ...restOfCurrentValue } = currentValue
+          accumulator.push({
+            ..._doc,
+            termTotalScore: score,
+          })
+        }
+
+        return accumulator
+      }, [])
+
+      return {
+        success: true,
+        msg: RecordSuccess.FETCH,
+        data: termTotalScore,
+      }
+    }
+    return {
+      success: true,
+      msg: RecordSuccess.FETCH,
+      data: record,
+      termTotalScore,
+    }
   }
 }
 

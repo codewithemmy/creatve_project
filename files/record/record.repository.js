@@ -20,7 +20,7 @@ class RecordRepository {
     const { limit, skip, sort, ...restOfPayload } = payload
 
     const record = Record.find({ ...restOfPayload })
-      .populate({ path: "branchId" })
+      .populate({ path: "branchId", select: "branchName location image" })
       .populate({
         path: "studentId",
         select: "name email intendedClass parentName profileImage",
