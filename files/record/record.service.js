@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose")
 const { queryConstructor, gradeCalculation } = require("../../utils")
 const { RecordSuccess, RecordFailure } = require("./record.messages")
 const { RecordRepository } = require("./record.repository")
+const { Record } = require("./record.model")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
@@ -118,15 +119,16 @@ class RecordService {
       skip,
       sort,
     })
-    let termTotalScore
 
-    if (record.length < 1)
+    if (record.length < 1) {
       return { success: true, msg: RecordFailure.FETCH, data: [] }
+    }
 
     if (params.studentId && params.classId && params.schoolTerm) {
-      termTotalScore = record.reduce((total, score) => {
-        return total + score.totalScore
-      }, 0)
+      const termTotalScore = record.reduce(
+        (total, score) => total + score.totalScore,
+        0
+      )
 
       return {
         success: true,
@@ -135,44 +137,48 @@ class RecordService {
         termTotalScore,
       }
     }
-    if (params.classId) {
-      // Perform reduce to get total score based on studentId._id
-      termTotalScore = record.reduce((accumulator, currentValue) => {
-        const studentId = currentValue.studentId._id
-        const score = currentValue.totalScore
 
-        // Check if there's already an entry for this studentId
-        const existingIndex = accumulator.findIndex(
-          (item) => item.studentId === studentId
+    if (params.classId) {
+      let result = []
+
+      for (const item of record) {
+        const student = item.studentId._id
+
+        const getSingleStudent =
+          await RecordRepository.findSingleRecordWithParams({
+            studentId: new mongoose.Types.ObjectId(student),
+          })
+
+        const getStudents = record.filter(
+          (newRecord) => newRecord.studentId._id === student
         )
 
-        // If the studentId already exists in the accumulator, update the score
-        if (existingIndex !== -1) {
-          accumulator[existingIndex].termTotalScore += score
-        } else {
-          // If the studentId doesn't exist, push a new object
-          const { _doc, ...restOfCurrentValue } = currentValue
+        const termTotalScore = getStudents.reduce(
+          (total, score) => total + score.totalScore,
+          0
+        )
 
-          accumulator.push({
-            ..._doc,
-            termTotalScore: score,
-          })
+        let studentData = {
+          classId: getSingleStudent.classId,
+          branchId: getSingleStudent.branchId,
+          studentId: getSingleStudent.studentId,
+          estimatedStudentScore: termTotalScore,
         }
 
-        return accumulator
-      }, [])
+        result.push(studentData)
+      }
 
       return {
         success: true,
         msg: RecordSuccess.FETCH,
-        data: termTotalScore,
+        data: result,
       }
     }
+
     return {
       success: true,
       msg: RecordSuccess.FETCH,
       data: record,
-      termTotalScore,
     }
   }
 }

@@ -7,7 +7,10 @@ class RecordRepository {
   }
 
   static async findSingleRecordWithParams(payload, select) {
-    const subject = Record.findOne({ ...payload }).select(select)
+    const subject = Record.findOne({ ...payload })
+      .select(select)
+      .populate("studentId")
+      .populate("classId")
 
     return subject
   }
