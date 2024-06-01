@@ -44,6 +44,12 @@ class SchoolClassService {
       return { success: true, msg: SchoolClassFailure.FETCH, data: [] }
 
     let newStudent
+    if (students && schoolTerm && students !== "records") {
+      return {
+        success: true,
+        msg: `Wrong parameter while getting students with total term score`,
+      }
+    }
     const studentsWithIndexAndReduce = await Promise.all(
       schoolClass[0].studentId.map(async (student) => {
         const record = await RecordRepository.findAllRecordParams({
