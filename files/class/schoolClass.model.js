@@ -41,5 +41,3 @@ const schoolClass = mongoose.model(
 )
 
 module.exports = { SchoolClass: schoolClass }
-
-//tag

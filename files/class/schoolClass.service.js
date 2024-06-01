@@ -5,6 +5,7 @@ const {
   SchoolClassFailure,
 } = require("./schoolClass.messages")
 const { SchoolClassRepository } = require("./schoolClass.repository")
+const { RecordRepository } = require("../record/record.repository")
 
 class SchoolClassService {
   static async createSchoolClass(payload, params) {
@@ -31,9 +32,9 @@ class SchoolClassService {
       "SchoolClass"
     )
     if (error) return { success: false, msg: error }
-
-    const schoolClass = await SchoolClassRepository.findAllSchoolClassParams({
-      ...params,
+    const { students, schoolTerm, ...restOfParams } = params
+    let schoolClass = await SchoolClassRepository.findAllSchoolClassParams({
+      ...restOfParams,
       limit,
       skip,
       sort,
@@ -42,7 +43,39 @@ class SchoolClassService {
     if (schoolClass.length < 1)
       return { success: true, msg: SchoolClassFailure.FETCH, data: [] }
 
-    return { success: true, msg: SchoolClassSuccess.FETCH, data: schoolClass }
+    let newStudent
+    const studentsWithIndexAndReduce = await Promise.all(
+      schoolClass[0].studentId.map(async (student) => {
+        const record = await RecordRepository.findAllRecordParams({
+          studentId: new mongoose.Types.ObjectId(student._id),
+          classId: new mongoose.Types.ObjectId(schoolClass[0]._id),
+          schoolTerm,
+        })
+        const termTotalScore = record.reduce(
+          (total, score) => total + score.totalScore,
+          0
+        )
+
+        return {
+          ...student, // Spread the student object
+          termTotalScore: termTotalScore, // Add the reduce result
+        }
+      })
+    )
+
+    newStudent = studentsWithIndexAndReduce
+    if (params && params.students === "records") {
+      return {
+        success: true,
+        msg: SchoolClassSuccess.FETCH,
+        data: newStudent,
+      }
+    }
+    return {
+      success: true,
+      msg: SchoolClassSuccess.FETCH,
+      data: schoolClass,
+    }
   }
 
   static async updateSchoolClass(payload, id) {

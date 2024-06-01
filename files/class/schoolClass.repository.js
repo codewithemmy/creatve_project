@@ -28,7 +28,7 @@ class SchoolClassRepository {
       .populate({ path: "teacherId" })
       .sort(sort)
       .skip(skip)
-      .limit(limit)
+      .limit(limit).lean()
 
     return schoolClass
   }

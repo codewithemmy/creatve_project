@@ -125,6 +125,9 @@ class RecordService {
     }
 
     if (params.studentId && params.classId && params.schoolTerm) {
+      const record = RecordRepository.findAllRecordParams({
+        classId: new mongoose.Types.ObjectId(classId._id),
+      })
       const termTotalScore = record.reduce(
         (total, score) => total + score.totalScore,
         0
@@ -135,43 +138,6 @@ class RecordService {
         msg: RecordSuccess.FETCH,
         data: record,
         termTotalScore,
-      }
-    }
-
-    if (params.classId) {
-      let result = []
-
-      for (const item of record) {
-        const student = item.studentId._id
-
-        const getSingleStudent =
-          await RecordRepository.findSingleRecordWithParams({
-            studentId: new mongoose.Types.ObjectId(student),
-          })
-
-        const getStudents = record.filter(
-          (newRecord) => newRecord.studentId._id === student
-        )
-
-        const termTotalScore = getStudents.reduce(
-          (total, score) => total + score.totalScore,
-          0
-        )
-
-        let studentData = {
-          classId: getSingleStudent.classId,
-          branchId: getSingleStudent.branchId,
-          studentId: getSingleStudent.studentId,
-          estimatedStudentScore: termTotalScore,
-        }
-
-        result.push(studentData)
-      }
-
-      return {
-        success: true,
-        msg: RecordSuccess.FETCH,
-        data: result,
       }
     }
 
