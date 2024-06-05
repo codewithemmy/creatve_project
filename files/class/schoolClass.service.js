@@ -50,6 +50,7 @@ class SchoolClassService {
         msg: `Wrong parameter while getting students with total term score`,
       }
     }
+    //student indexes
     const studentsWithIndexAndReduce = await Promise.all(
       schoolClass[0].studentId.map(async (student) => {
         const record = await RecordRepository.findAllRecordParams({
