@@ -113,7 +113,7 @@ class RecordService {
     )
     if (error) return { success: false, msg: error }
 
-    const record = await RecordRepository.findAllRecordParams({
+    let record = await RecordRepository.findAllRecordParams({
       ...params,
       limit,
       skip,
@@ -125,19 +125,19 @@ class RecordService {
     }
 
     if (params.studentId && params.classId && params.schoolTerm) {
-      const record = RecordRepository.findAllRecordParams({
-        classId: new mongoose.Types.ObjectId(classId._id),
-      })
-      const termTotalScore = record.reduce(
+      const totalScore = record.reduce(
         (total, score) => total + score.totalScore,
         0
       )
+
+      const averageTotalScore = totalScore / record.length
 
       return {
         success: true,
         msg: RecordSuccess.FETCH,
         data: record,
-        termTotalScore,
+        totalScore,
+        averageTotalScore,
       }
     }
 
