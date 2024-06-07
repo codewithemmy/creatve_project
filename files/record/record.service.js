@@ -131,7 +131,7 @@ class RecordService {
       )
 
       const averageTotalScore = totalScore / record.length
-      const { grade, customGrade } = gradeCalculation(Number(totalScore))
+      const { grade, customGrade } = gradeCalculation(Number(averageTotalScore))
 
       return {
         success: true,
