@@ -112,9 +112,24 @@ class RecordService {
       "Record"
     )
     if (error) return { success: false, msg: error }
+    const { year } = params
+    let extra = {}
 
+    if (year) {
+      // Create the start and end dates for the given year
+      const startDate = new Date(`${year}-01-01T00:00:00.000Z`)
+      const endDate = new Date(`${year}-12-31T23:59:59.999Z`)
+      extra = {
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+      }
+      delete params.year
+    }
     let record = await RecordRepository.findAllRecordParams({
       ...params,
+      ...extra,
       limit,
       skip,
       sort,
