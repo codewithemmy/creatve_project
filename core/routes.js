@@ -7,6 +7,7 @@ const studentRoute = require("../files/student/student.route")
 const schoolClassRoute = require("../files/class/schoolClass.route")
 const subjectRoute = require("../files/subject/subject.route")
 const recordRoute = require("../files/record/record.route")
+const remarksModel = require("../files/remarks/remarks.route")
 
 const routes = (app) => {
   const base_url = "/api/v1"
@@ -20,6 +21,7 @@ const routes = (app) => {
   app.use(`${base_url}/class`, schoolClassRoute)
   app.use(`${base_url}/subject`, subjectRoute)
   app.use(`${base_url}/record`, recordRoute)
+  app.use(`${base_url}/remarks`, remarksModel)
 }
 
 module.exports = routes

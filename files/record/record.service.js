@@ -3,6 +3,7 @@ const { queryConstructor, gradeCalculation } = require("../../utils")
 const { RecordSuccess, RecordFailure } = require("./record.messages")
 const { RecordRepository } = require("./record.repository")
 const { Record } = require("./record.model")
+const { RemarksRepository } = require("../remarks/remarks.repository")
 
 class RecordService {
   static async createRecord(recordPayload, locals) {
@@ -148,6 +149,12 @@ class RecordService {
       const averageTotalScore = totalScore / record.length
       const { grade, customGrade } = gradeCalculation(Number(averageTotalScore))
 
+      const remarks = await RemarksRepository.findSingleRemarksWithParams({
+        studentId: new mongoose.Types.ObjectId(params.studentId),
+        classId: new mongoose.Types.ObjectId(params.classId),
+        schoolTerm: params.schoolTerm,
+      })
+
       return {
         success: true,
         msg: RecordSuccess.FETCH,
@@ -156,6 +163,7 @@ class RecordService {
         averageTotalScore,
         averageGrade: grade,
         gradeName: customGrade,
+        remarks,
       }
     }
 
