@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose")
-const { queryConstructor, gradeCalculation } = require("../../utils")
-const { RemarkSuccess, RemarksFailure } = require("./record.messages")
+const { queryConstructor } = require("../../utils")
+const { RemarkSuccess, RemarksFailure } = require("./remarks.messages")
 const { RemarksRepository } = require("./remarks.repository")
 
 class RemarksService {

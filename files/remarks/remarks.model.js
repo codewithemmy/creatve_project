@@ -12,6 +12,23 @@ const remarksSchema = new mongoose.Schema(
       enum: ["first", "second", "third"],
       required: true,
     },
+    psychomotorDomain: {
+      drawing: Number,
+      painting: Number,
+      handWriting: Number,
+      sports: Number,
+      publicSpeaking: Number,
+    },
+    affectiveDomain: {
+      attentiveness: Number,
+      honesty: Number,
+      neatness: Number,
+      obedience: Number,
+      reliability: Number,
+      punctuality: Number,
+      relations: Number,
+      responsibility: Number,
+    },
   },
   { timestamps: true }
 )
