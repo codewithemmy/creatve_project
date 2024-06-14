@@ -33,8 +33,19 @@ const updateRemarksController = async (req, res, next) => {
   return responseHandler(res, 200, data)
 }
 
+const updateAffectiveDomainController = async (req, res, next) => {
+  const [error, data] = await manageAsyncOps(
+    RemarksService.updateAffectiveDomain(req.body, req.params.id)
+  )
+
+  if (error) return next(error)
+  if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
+  return responseHandler(res, 200, data)
+}
+
 module.exports = {
   createRemarksController,
   getRemarksController,
   updateRemarksController,
+  updateAffectiveDomainController,
 }

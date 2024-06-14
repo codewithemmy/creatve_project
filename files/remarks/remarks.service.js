@@ -43,6 +43,38 @@ class RemarksService {
     }
   }
 
+  //affective domain update
+
+  static async updateAffectiveDomain(payload, id) {
+    const remarks = await RemarksRepository.updateRemarksDetails(
+      { _id: new mongoose.Types.ObjectId(id) },
+      {
+        $set: {
+          "affectiveDomain.attentiveness": payload.attentiveness,
+          "affectiveDomain.honesty": payload.honesty,
+          "affectiveDomain.obedience": payload.obedience,
+          "affectiveDomain.neatness": payload.neatness,
+          "affectiveDomain.reliability": payload.reliability,
+          "affectiveDomain.punctuality": payload.punctuality,
+          "affectiveDomain.relations": payload.relations,
+          "affectiveDomain.responsibility": payload.responsibility,
+          "psychomotorDomain.drawing": payload.drawing,
+          "psychomotorDomain.painting": payload.painting,
+          "psychomotorDomain.handWriting": payload.handWriting,
+          "psychomotorDomain.sports": payload.sports,
+          "psychomotorDomain.publicSpeaking": payload.publicSpeaking,
+        },
+      }
+    )
+
+    if (!remarks) return { success: false, msg: RemarksFailure.UPDATE }
+
+    return {
+      success: true,
+      msg: RemarkSuccess.UPDATE,
+    }
+  }
+
   static async getRemarks(payload) {
     const { error, params, limit, skip, sort } = queryConstructor(
       payload,

@@ -5,6 +5,7 @@ const {
   createRemarksController,
   getRemarksController,
   updateRemarksController,
+  updateAffectiveDomainController,
 } = require("./remarks.controller")
 
 remarksRoute.use(isAuthenticated)
@@ -13,5 +14,6 @@ remarksRoute.use(isAuthenticated)
 remarksRoute.route("/").get(getRemarksController)
 remarksRoute.route("/").post(createRemarksController)
 remarksRoute.route("/:id").patch(updateRemarksController)
+remarksRoute.route("/domain/:id").patch(updateAffectiveDomainController)
 
 module.exports = remarksRoute

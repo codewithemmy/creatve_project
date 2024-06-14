@@ -33,7 +33,8 @@ class RemarksRepository {
   static async updateRemarksDetails(id, params) {
     return Remarks.findOneAndUpdate(
       { ...id },
-      { ...params } //returns details about the update
+      { ...params },
+      { new: true, runValidators: true }
     )
   }
 }
