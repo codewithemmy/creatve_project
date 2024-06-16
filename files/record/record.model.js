@@ -6,6 +6,7 @@ const recordSchema = new mongoose.Schema(
     branchId: { type: mongoose.Types.ObjectId, ref: "Branch" },
     studentId: { type: mongoose.Types.ObjectId, ref: "Student" },
     subjectId: { type: mongoose.Types.ObjectId, ref: "Subject" },
+    isApproved: { type: Boolean, default: false },
     resumptionTest: { type: Number, default: 0 },
     midTermTest: { type: Number, default: 0 },
     project: { type: Number, default: 0 },
