@@ -21,6 +21,7 @@ const schoolClassSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    isApproved: { type: Boolean, default: false },
     image: {
       type: String,
     },
