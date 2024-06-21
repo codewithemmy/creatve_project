@@ -50,32 +50,34 @@ class SchoolClassService {
         msg: `Wrong parameter while getting students with total term score`,
       }
     }
-    //student indexes
-    const studentsWithIndexAndReduce = await Promise.all(
-      schoolClass[0].studentId.map(async (student) => {
-        const record = await RecordRepository.findAllRecordParams({
-          studentId: new mongoose.Types.ObjectId(student._id),
-          classId: new mongoose.Types.ObjectId(schoolClass[0]._id),
-          schoolTerm,
+    if (!params.branchId) {
+      //student indexes
+      const studentsWithIndexAndReduce = await Promise.all(
+        schoolClass[0]?.studentId.map(async (student) => {
+          const record = await RecordRepository.findAllRecordParams({
+            studentId: new mongoose.Types.ObjectId(student._id),
+            classId: new mongoose.Types.ObjectId(schoolClass[0]._id),
+            schoolTerm,
+          })
+          const termTotalScore = record.reduce(
+            (total, score) => total + score.totalScore,
+            0
+          )
+
+          return {
+            ...student, // Spread the student object
+            termTotalScore: termTotalScore, // Add the reduce result
+          }
         })
-        const termTotalScore = record.reduce(
-          (total, score) => total + score.totalScore,
-          0
-        )
+      )
 
+      newStudent = studentsWithIndexAndReduce
+      if (params && params.students === "records") {
         return {
-          ...student, // Spread the student object
-          termTotalScore: termTotalScore, // Add the reduce result
+          success: true,
+          msg: SchoolClassSuccess.FETCH,
+          data: newStudent,
         }
-      })
-    )
-
-    newStudent = studentsWithIndexAndReduce
-    if (params && params.students === "records") {
-      return {
-        success: true,
-        msg: SchoolClassSuccess.FETCH,
-        data: newStudent,
       }
     }
     return {
