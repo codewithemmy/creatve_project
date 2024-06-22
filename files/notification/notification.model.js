@@ -10,8 +10,18 @@ const NotificationSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    branchId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Branch",
+    },
+    recipient: { type: String },
     title: {
       type: String,
+    },
+    type: {
+      type: String,
+      enum: ["advert", "event", "announcement", "emailSms", "normal"],
+      default: "normal",
     },
     message: {
       type: String,
@@ -21,10 +31,6 @@ const NotificationSchema = new mongoose.Schema(
       enum: ["new", "read"],
       default: "new",
     },
-    // recipient: {
-    //   type: String,
-    //   enum: ["admin"],
-    // },
   },
   { timestamps: true }
 )
