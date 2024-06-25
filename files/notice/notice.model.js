@@ -20,6 +20,10 @@ const noticeSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       refPath: "userType",
     },
+    classId: {
+      type: mongoose.Types.ObjectId,
+      ref: "SchoolClass",
+    },
     time: { type: String },
     noticeType: {
       type: String,

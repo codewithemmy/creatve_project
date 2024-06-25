@@ -6,11 +6,11 @@ const {
 } = require("../notification/notification.repository")
 const { NoticeFailure, NoticeSuccess } = require("./notice.messages")
 const { UserRepository } = require("../user/user.repository")
-const { sendMailNotification } = require("../../utils/email")
 
 class NoticeService {
   static async create(payload, locals) {
     const { image, body } = payload
+    const { classId } = body
 
     if (!body.noticeType)
       return {
@@ -25,6 +25,11 @@ class NoticeService {
       createdBy = new mongoose.Types.ObjectId(locals._id)
     }
     if (locals.accountType === "teacher") {
+      if (!classId)
+        return {
+          success: false,
+          msg: `classId cannot be null for teacher creating notice`,
+        }
       userType = "User"
       createdBy = new mongoose.Types.ObjectId(locals._id)
     }
@@ -40,38 +45,77 @@ class NoticeService {
 
     let mappedUsers
 
-    const user = await UserRepository.findAllUsersParams({})
-    mappedUsers = user.map(async (item) => {
-      NotificationRepository.createNotification({
-        recipientId: new mongoose.Types.ObjectId(item._id),
-        title: `${title}`,
-        message: `${content}`,
-        recipient: "User",
-        type: noticeType,
+    if (locals.accountType === "admin") {
+      const user = await UserRepository.findAllUsersParams({})
+      mappedUsers = user.map(async (item) => {
+        NotificationRepository.createNotification({
+          recipientId: new mongoose.Types.ObjectId(item._id),
+          title: `${title}`,
+          message: `${content}`,
+          recipient: "User",
+          type: noticeType,
+        })
+        // if (noticeType === "emailSms") {
+        //   try {
+        //     const substitutional_parameters = {
+        //       name: item.fullName,
+        //       content: content,
+        //       title: title,
+        //     }
+
+        //     await sendMailNotification(
+        //       item.email,
+        //       `${title}`,
+        //       substitutional_parameters,
+        //       "EMAIL_NOTICE"
+        //     )
+        //   } catch (error) {
+        //     console.log("error", error)
+        //   }
+        // }
       })
-      // if (noticeType === "emailSms") {
-      //   try {
-      //     const substitutional_parameters = {
-      //       name: item.fullName,
-      //       content: content,
-      //       title: title,
-      //     }
 
-      //     await sendMailNotification(
-      //       item.email,
-      //       `${title}`,
-      //       substitutional_parameters,
-      //       "EMAIL_NOTICE"
-      //     )
-      //   } catch (error) {
-      //     console.log("error", error)
-      //   }
-      // }
-    })
+      await Promise.all(mappedUsers)
 
-    await Promise.all(mappedUsers)
+      if (!notice) return { success: false, msg: NoticeFailure.CREATE }
+    }
 
-    if (!notice) return { success: false, msg: NoticeFailure.CREATE }
+    if (locals.accountType === "teacher") {
+      const user = await UserRepository.findAllUsersParams({
+        intendedClass: new mongoose.Types.ObjectId(body.classId),
+      })
+      mappedUsers = user.map(async (item) => {
+        NotificationRepository.createNotification({
+          recipientId: new mongoose.Types.ObjectId(item._id),
+          title: `${title}`,
+          message: `${content}`,
+          recipient: "User",
+          type: noticeType,
+        })
+        // if (noticeType === "emailSms") {
+        //   try {
+        //     const substitutional_parameters = {
+        //       name: item.fullName,
+        //       content: content,
+        //       title: title,
+        //     }
+
+        //     await sendMailNotification(
+        //       item.email,
+        //       `${title}`,
+        //       substitutional_parameters,
+        //       "EMAIL_NOTICE"
+        //     )
+        //   } catch (error) {
+        //     console.log("error", error)
+        //   }
+        // }
+      })
+
+      await Promise.all(mappedUsers)
+
+      if (!notice) return { success: false, msg: NoticeFailure.CREATE }
+    }
 
     return {
       success: true,
