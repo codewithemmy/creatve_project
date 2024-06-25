@@ -9,6 +9,7 @@ const subjectRoute = require("../files/subject/subject.route")
 const recordRoute = require("../files/record/record.route")
 const remarksModel = require("../files/remarks/remarks.route")
 const noticeRoute = require("../files/notice/notice.route")
+const reportRoute = require("../files/report/report.route")
 
 const routes = (app) => {
   const base_url = "/api/v1"
@@ -24,6 +25,7 @@ const routes = (app) => {
   app.use(`${base_url}/record`, recordRoute)
   app.use(`${base_url}/remarks`, remarksModel)
   app.use(`${base_url}/notice`, noticeRoute)
+  app.use(`${base_url}/report`, reportRoute)
 }
 
 module.exports = routes
