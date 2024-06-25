@@ -27,7 +27,7 @@ const noticeSchema = new mongoose.Schema(
     time: { type: String },
     noticeType: {
       type: String,
-      enum: ["advert", "event", "announcement", "emailSms"],
+      enum: ["advert", "event", "announcement", "emailSms", "assignment"],
     },
     image: {
       type: String,

@@ -21,7 +21,7 @@ class NoticeService {
     let userType
     let createdBy
     if (locals.accountType === "admin") {
-      userType = "Admin"
+      userType = "Admin"  
       createdBy = new mongoose.Types.ObjectId(locals._id)
     }
     if (locals.accountType === "teacher") {
