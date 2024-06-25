@@ -6,7 +6,9 @@ const { NoticeService } = require("./notice.service")
 
 const createNoticeController = async (req, res, next) => {
   let value = await fileModifier(req)
-  const [error, data] = await manageAsyncOps(NoticeService.create(value))
+  const [error, data] = await manageAsyncOps(
+    NoticeService.create(value, res.locals.jwt)
+  )
   if (error) return next(error)
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
   return responseHandler(res, SUCCESS, data)

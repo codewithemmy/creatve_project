@@ -11,6 +11,15 @@ const noticeSchema = new mongoose.Schema(
     date: {
       type: Date,
     },
+    userType: {
+      type: String,
+      enum: ["Admin", "User"],
+    },
+    dueDate: { type: Date },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      refPath: "userType",
+    },
     time: { type: String },
     noticeType: {
       type: String,

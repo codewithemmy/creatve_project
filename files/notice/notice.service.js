@@ -9,7 +9,7 @@ const { UserRepository } = require("../user/user.repository")
 const { sendMailNotification } = require("../../utils/email")
 
 class NoticeService {
-  static async create(payload) {
+  static async create(payload, locals) {
     const { image, body } = payload
 
     if (!body.noticeType)
@@ -18,10 +18,23 @@ class NoticeService {
         msg: `Notice type cannot be empty`,
       }
 
+    let userType
+    let createdBy
+    if (locals.accountType === "admin") {
+      userType = "Admin"
+      createdBy = new mongoose.Types.ObjectId(locals._id)
+    }
+    if (locals.accountType === "teacher") {
+      userType = "User"
+      createdBy = new mongoose.Types.ObjectId(locals._id)
+    }
+
     const { branchId, title, content, noticeType } = body
     const notice = await NoticeRepository.create({
       ...body,
       image,
+      userType,
+      createdBy,
       branchId: new mongoose.Types.ObjectId(branchId),
     })
 
